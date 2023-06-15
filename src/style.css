@@ -1,0 +1,60 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.viewport {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#fita-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+#fita-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    #ffffff 0%,
+    #ffffff 5%,
+    #fff0 25%,
+    #fff0 75%,
+    #ffffff 95%,
+    #ffffff 100%
+  );
+  opacity: 1;
+
+}
+
+#fita {
+  display: flex;
+  transform: translateX(50%) translateX(-32px);
+}
+
+.celula {
+  width: 64px;
+  height: 64px;
+  border: 4px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 32px;
+  margin-right: -4px;
+}
+
+.celula:last-child {
+  margin-right: 0;
+}
