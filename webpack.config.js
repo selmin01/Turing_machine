@@ -9,7 +9,14 @@ module.exports = {
     filename: "bundle.js"
   },
   plugins: [
-    new HtmlWebpackPlugin({ template: "src/index.html" })
+    new HtmlWebpackPlugin({
+      template: "src/pages/index.html",
+      filename: "index.html"
+    }),
+    new HtmlWebpackPlugin({
+      template: "src/pages/turing-machine.html",
+      filename: "turing-machine.html"
+    })
   ],
   module: {
     rules: [
