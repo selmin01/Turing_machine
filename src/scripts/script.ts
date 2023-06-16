@@ -19,6 +19,6 @@ function movToRight(element: HTMLElement, mvValue: number) {
 }
 
 if (fita && moveToRight && moveToLeft) {
-  moveToRight.addEventListener("click", () => movToRight(fita, 64))
-  moveToLeft.addEventListener("click", () => movToRight(fita, -64))
+  moveToRight.addEventListener("click", () => movToRight(fita, 60))
+  moveToLeft.addEventListener("click", () => movToRight(fita, -60))
 }

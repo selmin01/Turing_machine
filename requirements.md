@@ -29,6 +29,7 @@ As validações que precisam ser feitas são:
 - Os três estados q0, q-aceita e q-rejeita precisam pertencer ao conjunto definido Q;
 - O estado q-aceita precisa ser diferente do estado q-rejeita;
 - Não pode ter duas possibilidades para uma mesma transição (de modo que a MT seja determinista);
+- Transições devem apenas ter símbolos de um caractere (validação necessária devido ao fato de o TypeScript não ter tipagem para Char)
 
 ### O funcionamento da Máquina
 
