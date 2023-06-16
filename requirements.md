@@ -40,6 +40,14 @@ Fornecidos os dados a respeito da MT, o programa iniciará com o cabeçote na pr
 - Uma seção com a situação atual da máquina, que mostrará uma das seguintes possibilidades: Aguardando, computando, aceitou, rejeitou por indefinição, rejeitou por chegada ao estado de aceitação;
 - Uma seção com um botão de play para iniciar a computação, botão de pause para pausar e de restart para voltar ao início;
 - Um acelerador, para o caso de o usuário querer acelerar a computação.
+- Dados sobre a MT em si:
+  - O conjunto inferido de estados Q;
+  - O alfabeto inferido de entrada Σ;
+  - O alfabeto inferido da fita Γ;
+  - O conjunto de transições inserido δ;
+  - O nome do estado inicial;
+  - O nome do estado de aceitação;
+  - O nome do estado de rejeição;
 
 ### As animações
 

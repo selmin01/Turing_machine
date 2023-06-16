@@ -1,18 +1,18 @@
-type Estado = string
-type Movimento = "Esquerda" | "Direita"
-type Alfabeto = string
-type Simbolo = string
-type Transicao = [Estado, Simbolo, Estado, Simbolo, Movimento]
-type Tick = 1 | 1.25 | 1.5 | 1.75 | 2 | 4 | 8 | 16
-type Parada = "Aceitou"
+export type Estado = string
+export type Movimento = "Esquerda" | "Direita"
+export type Alfabeto = string
+export type Simbolo = string
+export type Transicao = [Estado, Simbolo, Estado, Simbolo, Movimento]
+export type Tick = 1 | 1.25 | 1.5 | 1.75 | 2 | 4 | 8 | 16
+export type Parada = "Aceitou"
   | "Rejeitou, estado de rejeição"
   | "Rejeitou por indefinição"
-type StatusMaquina = "Não iniciada"
+export type StatusMaquina = "Não iniciada"
   | "Pausada"
   | "Computando"
   | Parada
-type Fita = [string, Estado, number] // Conteúdo da fita, Estado atual, posição do cabeçote
-type IAtualizacaoMaquina = {
+export type Fita = [string, Estado, number] // Conteúdo da fita, Estado atual, posição do cabeçote
+export interface IAtualizacaoMaquina {
   aplicarTransicao: (f: Fita, t: Transicao) => void
   finalizarComputacao: (p: Parada) => void
 }
@@ -61,11 +61,15 @@ export default class MaquinaTuring {
       throw new Error("Os estados de aceitação e de rejeição devem ser diferentes!")
     
     // Verifica se há duas possibilidades para a mesma transição
-    if (δ.some(([q1, s1]) => δ.some(([q2, s2]) => q1 === q2 && s1 === s2)))
+    if (
+      δ.some(([q1, s1], i1) =>
+        δ.filter((_, i2) => i2 !== i1)
+         .some(([q2, s2]) => q1 === q2 && s1 === s2))
+    )
       throw new Error("Não pode haver duas possibilidades para a mesma transição!")
     
     // Verifica se todas as strings das transições têm realmente apenas um símbolo
-    if (δ.some(t => !(isSimbolo(t[0]) && isSimbolo(t[2]))))
+    if (δ.some(t => !(isSimbolo(t[1]) && isSimbolo(t[3]))))
       throw new Error("Os símbolos das funções de transição devem conter apenas um caracter!")
 
     this._Q = Q
@@ -104,8 +108,8 @@ export default class MaquinaTuring {
   }
 
   rodar(w: string) {
-    if (this)
-
+    console.log("Rodar executando!")
+    
     this._Σ = [... new Set(w)].sort().join('')
     this._Γ = [...new Set(this._Γ.concat(this._Σ))].sort().join('')
 
@@ -116,6 +120,8 @@ export default class MaquinaTuring {
     const operacao = () => {
       const [conteudoFita, estadoAtual, cabecote] = this._fita
       const simboloAtual = conteudoFita[cabecote]
+
+      console.log("Computando...")
 
       if (this._status != "Computando")
         return
@@ -139,7 +145,7 @@ export default class MaquinaTuring {
         return
       }
 
-      const [,, estDestino, simbEscrita, mov] = transicao
+      const [, , estDestino, simbEscrita, mov] = transicao
 
       // Atualizar o conteúdo da fita
       const novoConteudoFita = conteudoFita.split('')
@@ -157,8 +163,10 @@ export default class MaquinaTuring {
       
       this.atualizacao.aplicarTransicao(this._fita, transicao)
 
-      setTimeout(() => operacao(), this._tick)
+      setTimeout(() => operacao(), 1000 / this._tick)
     }
+
+    operacao()
   }
 
   mudarTick(tick: Tick) {
