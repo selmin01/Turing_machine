@@ -121,7 +121,12 @@ export default class MaquinaTuring {
       const [conteudoFita, estadoAtual, cabecote] = this._fita
       const simboloAtual = conteudoFita[cabecote]
 
-      console.log("Computando...")
+      // console.log("Computando...")
+      // console.log("Conteudo da fita: ")
+      // console.log(conteudoFita)
+      // console.log("Estado atual: ")
+      // console.log(estadoAtual)
+      // console.log(`Posicao atual do cabecote: ${cabecote}`)
 
       if (this._status != "Computando")
         return
@@ -146,6 +151,9 @@ export default class MaquinaTuring {
       }
 
       const [, , estDestino, simbEscrita, mov] = transicao
+
+      // console.log(`Movimento da transicao: ${mov}`)
+      // console.log(`Simbolo de escrita: ${simbEscrita}`)
 
       // Atualizar o conteúdo da fita
       const novoConteudoFita = conteudoFita.split('')

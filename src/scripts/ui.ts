@@ -1,17 +1,20 @@
-export function moverParaDireita(element: HTMLElement, mvValue: number) {
-  // get current TranslateX value
-  const transformValue = window.getComputedStyle(element).getPropertyValue("transform")
-  const matrix = new DOMMatrixReadOnly(transformValue)
-
-  // Apply transformation
-  const currentPos = matrix.m41
+function calcularNovaPosicao(element: HTMLElement, mvValue: number) {
+  const transformValue = getComputedStyle(element).getPropertyValue("transform")
+  const currentPos = new DOMMatrixReadOnly(transformValue).m41
   const newPos = currentPos + mvValue
-  console.log(currentPos)
-  console.log(newPos)
-  element.style.transform = `translateX(${newPos}px)`
+  return newPos
 }
 
-export function preencherCelulasMT(elemFita: HTMLUListElement, posAtual: number, conteudo: string) {
+export function moverCabecoteDireita(fita: HTMLElement) {
+  fita.style.transform = `translateX(${calcularNovaPosicao(fita, -60)}px)`
+}
+
+export function moverCabecoteEsquerda(fita: HTMLUListElement) {
+  fita.style.transform = `translateX(${calcularNovaPosicao(fita, 60)}px)`
+} 
+
+export function preencherCelulasMT(ulFita: HTMLUListElement, posAtual: number, conteudo: string) {
+  ulFita.innerHTML = ''
   let left24Elements: HTMLLIElement[] = []
   let i = 0, c = posAtual
   while (i < 24) {
@@ -43,5 +46,5 @@ export function preencherCelulasMT(elemFita: HTMLUListElement, posAtual: number,
   }
 
   const totalElements = left24Elements.concat(right24Elements)
-  totalElements.forEach(elem => elemFita.appendChild(elem))
+  totalElements.forEach(elem => ulFita.appendChild(elem))
 }
