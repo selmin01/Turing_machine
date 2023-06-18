@@ -1,5 +1,5 @@
 import MaquinaTuring, { Estado, Fita, IControladorMaquina, IDadosMaquinaTuring, Parada, Tick, Transicao } from "../logic/MaquinaTuring"
-import { moverCabecoteDireita, moverCabecoteEsquerda, preencherCelulasMT } from "./ui"
+import { animarTransicaoCelula, falsoMovimentoAEsquerda, moverCabecoteDireita, moverCabecoteEsquerda, preencherCelulasMT } from "./ui"
 
 // export interface IAtualizacaoMaquina {
 //   aplicarTransicao: (f: Fita, t: Transicao) => void
@@ -27,11 +27,13 @@ function criarControladorMT(
 ): IControladorMaquina {
   
   const ulFita: HTMLUListElement = document.getElementById("fita") as HTMLUListElement
-  ulFita.style.transition = "transform 0.75s ease"
-  let conteudo = ''
-  let posAtual = 0
+  let conteudo: string = ''
+  let posAtual: number = 0
   let estadoAtual: Estado = dados.q_0
-  let qtdTransicoesParaAtualizacao = 0
+  let qtdTransicoesParaAtualizacao: number = 0
+  let tick: Tick = 1
+
+  ulFita.style.transitionDuration = `${(1000 / tick) * 0.75}ms`
 
   let celulaAtual = preencherCelulasMT(ulFita, 0, conteudo)
 
@@ -49,6 +51,7 @@ function criarControladorMT(
   
     if (mov === "Direita") {
       moverCabecoteDireita(ulFita)
+      animarTransicaoCelula(celulaAtual, tick)
       celulaAtual = celulaAtual.nextElementSibling as HTMLLIElement
       posAtual++
     }
@@ -56,8 +59,13 @@ function criarControladorMT(
       const celulaAnterior = celulaAtual.previousElementSibling as HTMLLIElement
       if (celulaAnterior) {
         moverCabecoteEsquerda(ulFita)
+        animarTransicaoCelula(celulaAtual, tick)
         celulaAtual = celulaAnterior
         posAtual--
+      } else {
+        falsoMovimentoAEsquerda(ulFita, tick)
+        animarTransicaoCelula(celulaAtual, tick)
+        console.log("Falso movimento a esquerda!")
       }
     }
 
@@ -73,7 +81,9 @@ function criarControladorMT(
   }
 
   function alterarTick(t: Tick) {
-    ulFita.style.transition = `transform ${(1000 / t) * 0.75} ease`
+    tick = t
+    const tickTime = (1000 / t) * 0.75
+    ulFita.style.transitionDuration = `${tickTime}ms`
   }
 
   return { iniciarMaquinaTuring, aplicarTransicao, finalizarComputacao, alterarTick }
@@ -89,9 +99,9 @@ export default function submitDadosMT(dados: IDadosMaquinaTuring): MaquinaTuring
 const mockDadosMaquina: IDadosMaquinaTuring = {
   Q: ["q0", "q1", "q2", "q3", "q4", "q_rejeita"],
   δ: [
-    ["q0", "0", "q0", "0", "Direita"], // Stay in q0 and write 1, move right
-    ["q0", "1", "q0", "1", "Direita"], // Stay in q0 and write 0, move right
-    ["q0", " ", "q1", "1", "Esquerda"], // Move to q1 and write 1, move left
+    ["q0", "0", "q0", "1", "Direita"], // Stay in q0 and write 1, move right
+    ["q0", "1", "q0", "0", "Direita"], // Stay in q0 and write 0, move right
+    ["q0", " ", "q0", "1", "Direita"], // Move to q1 and write 1, move left
     ["q1", "0", "q2", "1", "Esquerda"], // Move to q2 and write 1, move left
     ["q1", "1", "q1", "0", "Esquerda"], // Stay in q1 and write 0, move left
     ["q2", "0", "q2", "0", "Esquerda"], // Stay in q2 and write 0, move left
@@ -115,5 +125,21 @@ initMTButton?.addEventListener("click", () => {
 const startMTButton = document.querySelector("#startMT")
 startMTButton?.addEventListener("click", () => {
   mt.rodar()
+})
+const tick1Button = document.querySelector("#tick1")
+tick1Button?.addEventListener("click", () => {
+  mt.mudarTick(1)
+})
+const tick2Button = document.querySelector("#tick2")
+tick2Button?.addEventListener("click", () => {
+  mt.mudarTick(2)
+})
+const tick4Button = document.querySelector("#tick4")
+tick4Button?.addEventListener("click", () => {
+  mt.mudarTick(4)
+})
+const tick8Button = document.querySelector("#tick8")
+tick8Button?.addEventListener("click", () => {
+  mt.mudarTick(8)
 })
 

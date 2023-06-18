@@ -1,17 +1,34 @@
-function calcularNovaPosicao(element: HTMLElement, mvValue: number) {
+function obterPosicaoAtual(element: HTMLElement) {
   const transformValue = getComputedStyle(element).getPropertyValue("transform")
   const currentPos = new DOMMatrixReadOnly(transformValue).m41
-  const newPos = currentPos + mvValue
-  return newPos
+  return currentPos
 }
 
 export function moverCabecoteDireita(fita: HTMLElement) {
-  fita.style.transform = `translateX(${calcularNovaPosicao(fita, -60)}px)`
+  fita.style.transform = `translateX(${obterPosicaoAtual(fita) - 60}px)`
 }
 
 export function moverCabecoteEsquerda(fita: HTMLUListElement) {
-  fita.style.transform = `translateX(${calcularNovaPosicao(fita, 60)}px)`
-} 
+  fita.style.transform = `translateX(${obterPosicaoAtual(fita) + 60}px)`
+}
+
+export function falsoMovimentoAEsquerda(fita: HTMLUListElement, tick: number) {
+  const posicaoAtual = obterPosicaoAtual(fita)
+  fita.style.transform = `translateX(${posicaoAtual + 32}px)`
+  setTimeout(() => {
+    fita.style.transform = `translateX(${posicaoAtual}px)`
+  }, (1000 / tick) * 0.2)
+}
+
+export function animarTransicaoCelula(celula: HTMLLIElement, tick: number) {
+  celula.style.transitionDuration = '0ms'
+  celula.style.color = "#3498db"
+  setTimeout(() => {
+    celula.style.transitionDuration = `${(1000 / tick) * 0.2}ms`
+    celula.style.color = "#111414"
+  }, (1000 / tick) * 0.2)
+
+}
 
 export function preencherCelulasMT(ulFita: HTMLUListElement, posAtual: number, conteudo: string): HTMLLIElement {
   const qtdElemendsEachSide = 48

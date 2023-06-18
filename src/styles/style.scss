@@ -53,6 +53,8 @@ ul, li {
 #fita {
   display: flex;
   transform: translateX(50%) translateX(-32px);
+  transition-property: transform;
+  transition-timing-function: ease;
 }
 
 .celula {
@@ -66,6 +68,9 @@ ul, li {
   font-weight: bold;
   font-size: 32px;
   margin-right: -4px;
+
+  transition-property: color;
+  transition-timing-function: ease;
 
   &:last-child {
     margin-right: 0;

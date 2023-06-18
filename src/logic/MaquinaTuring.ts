@@ -201,7 +201,6 @@ export default class MaquinaTuring {
   mudarTick(tick: Tick) {
     this.controlador.alterarTick(tick)
     this._tick = tick
-
   }
 
   get Q(): Estado[] {
