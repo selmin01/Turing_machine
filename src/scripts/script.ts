@@ -1,4 +1,4 @@
-import MaquinaTuring, { Estado, Fita, IAtualizacaoMaquina, IDadosMaquinaTuring, Parada, Transicao } from "../logic/MaquinaTuring"
+import MaquinaTuring, { Estado, Fita, IControladorMaquina, IDadosMaquinaTuring, Parada, Tick, Transicao } from "../logic/MaquinaTuring"
 import { moverCabecoteDireita, moverCabecoteEsquerda, preencherCelulasMT } from "./ui"
 
 // export interface IAtualizacaoMaquina {
@@ -13,92 +13,84 @@ import { moverCabecoteDireita, moverCabecoteEsquerda, preencherCelulasMT } from 
 //   q_rejeita: Estado
 // }
 
+// export interface IViewStatus {
+//   ulFita: HTMLUListElement
+//   conteudo: string
+//   celulaAtual: HTMLLIElement
+//   posAtual: number
+//   estadoAtual: Estado
+//   qtdTransicoesParaAtualizacao: number
+// }
 
-
-export interface IViewStatus {
-  ulFita: HTMLUListElement
-  primeiraCelula: HTMLLIElement
-  celulaAtual: HTMLLIElement
-  posAtual: number
-  estadoAtual: Estado
-  qtdTransicoesParaAtualizacao: number
-}
-
-function aplicarTransicao(viewStatus: IViewStatus, fitaAtualizada: Fita, t: Transicao) {
-  const [conteudo, novoEstado, cabecote] = fitaAtualizada
-  const [, , estDestino, simbEscrita, mov] = t
-  let { ulFita, celulaAtual, qtdTransicoesParaAtualizacao, posAtual } = viewStatus
-  qtdTransicoesParaAtualizacao++
-
-  celulaAtual.innerText = simbEscrita
-
-  if (qtdTransicoesParaAtualizacao > 11) {
-    preencherCelulasMT(ulFita, posAtual, conteudo)
-    qtdTransicoesParaAtualizacao = 0
-  }
+function criarControladorMT(
+  dados: IDadosMaquinaTuring
+): IControladorMaquina {
   
-  if (mov === "Direita") {
-    moverCabecoteDireita(ulFita)
-    console.log(celulaAtual)
-    celulaAtual = celulaAtual.nextElementSibling as HTMLLIElement
-    console.log(celulaAtual)
-    posAtual++
-  }
-  else {
-    const celulaAnterior = celulaAtual.previousElementSibling as HTMLLIElement
-    if (celulaAnterior) {
-      moverCabecoteEsquerda(ulFita)
-      celulaAtual = celulaAnterior
-      posAtual--
-    }
-  }
-
-  viewStatus.celulaAtual = celulaAtual
-  viewStatus.qtdTransicoesParaAtualizacao = qtdTransicoesParaAtualizacao
-  viewStatus.posAtual = posAtual
-}
-
-function finalizarComputacao(p: Parada) {
-  console.log("Parou!")
-}
-
-export default function submitDadosMT(dados: IDadosMaquinaTuring): [HTMLUListElement, MaquinaTuring] {
   const ulFita: HTMLUListElement = document.getElementById("fita") as HTMLUListElement
-  ulFita.style.transition = "transform 0.3s ease"
-
-  preencherCelulasMT(ulFita, 0, '')
-
-  let primeiraCelula: HTMLLIElement = document.getElementById("primeira-celula") as HTMLLIElement
-  let celulaAtual: HTMLLIElement = primeiraCelula
+  ulFita.style.transition = "transform 0.75s ease"
+  let conteudo = ''
   let posAtual = 0
   let estadoAtual: Estado = dados.q_0
   let qtdTransicoesParaAtualizacao = 0
 
-  const viewStatus: IViewStatus = {
-    ulFita,
-    primeiraCelula,
-    celulaAtual,
-    posAtual,
-    estadoAtual,
-    qtdTransicoesParaAtualizacao
+  let celulaAtual = preencherCelulasMT(ulFita, 0, conteudo)
+
+  function iniciarMaquinaTuring(w: string): void {
+    conteudo = w
+    celulaAtual = preencherCelulasMT(ulFita, 0, conteudo)
   }
 
-  const atualizacaoView: IAtualizacaoMaquina = {
-    aplicarTransicao: (f: Fita, t: Transicao) => aplicarTransicao(viewStatus, f, t),
-    finalizarComputacao
+  function aplicarTransicao(t: Transicao): void {
+    const [,, estDestino, simbEscrita, mov] = t
+
+    conteudo = conteudo.slice(0, posAtual) + simbEscrita + conteudo.slice(posAtual + 1)
+    celulaAtual.innerText = simbEscrita
+    estadoAtual = estDestino
+  
+    if (mov === "Direita") {
+      moverCabecoteDireita(ulFita)
+      celulaAtual = celulaAtual.nextElementSibling as HTMLLIElement
+      posAtual++
+    }
+    else {
+      const celulaAnterior = celulaAtual.previousElementSibling as HTMLLIElement
+      if (celulaAnterior) {
+        moverCabecoteEsquerda(ulFita)
+        celulaAtual = celulaAnterior
+        posAtual--
+      }
+    }
+
+    qtdTransicoesParaAtualizacao++
+    if (qtdTransicoesParaAtualizacao > 11) {
+      celulaAtual = preencherCelulasMT(ulFita, posAtual, conteudo)
+      qtdTransicoesParaAtualizacao = 0
+    }
   }
 
-  return [
-    ulFita,
-    new MaquinaTuring(dados, atualizacaoView)
-  ]
+  function finalizarComputacao(p: Parada) {
+    console.log("Parou!")
+  }
+
+  function alterarTick(t: Tick) {
+    ulFita.style.transition = `transform ${(1000 / t) * 0.75} ease`
+  }
+
+  return { iniciarMaquinaTuring, aplicarTransicao, finalizarComputacao, alterarTick }
+}
+
+
+
+export default function submitDadosMT(dados: IDadosMaquinaTuring): MaquinaTuring {
+  const controladorMT: IControladorMaquina = criarControladorMT(dados)
+  return new MaquinaTuring(dados, controladorMT)
 }
 
 const mockDadosMaquina: IDadosMaquinaTuring = {
   Q: ["q0", "q1", "q2", "q3", "q4", "q_rejeita"],
   δ: [
-    ["q0", "0", "q0", "1", "Direita"], // Stay in q0 and write 1, move right
-    ["q0", "1", "q0", "0", "Esquerda"], // Stay in q0 and write 0, move right
+    ["q0", "0", "q0", "0", "Direita"], // Stay in q0 and write 1, move right
+    ["q0", "1", "q0", "1", "Direita"], // Stay in q0 and write 0, move right
     ["q0", " ", "q1", "1", "Esquerda"], // Move to q1 and write 1, move left
     ["q1", "0", "q2", "1", "Esquerda"], // Move to q2 and write 1, move left
     ["q1", "1", "q1", "0", "Esquerda"], // Stay in q1 and write 0, move left
@@ -114,24 +106,14 @@ const mockDadosMaquina: IDadosMaquinaTuring = {
   q_rejeita: "q_rejeita",
 };
 
-// if (elemFita) {
-//   document.addEventListener("keydown", (e) => {
-//     if (e.code === "ArrowLeft") {
-//       moverParaDireita(elemFita, 60)
-//     } else if (e.code === "ArrowRight") {
-//       moverParaDireita(elemFita, -60)
-//     }
-//   })
-// }
-
-function iniciarComputacao(fita: HTMLUListElement, mt: MaquinaTuring, w: string) {
-  preencherCelulasMT(fita, 0, w)
-  mt.rodar(w)
-}
+const mt = submitDadosMT(mockDadosMaquina)
 
 const initMTButton = document.querySelector("#initMT")
 initMTButton?.addEventListener("click", () => {
-  const [fita, MT] = submitDadosMT(mockDadosMaquina)
-  iniciarComputacao(fita, MT, "0101")
+  mt.iniciar("0101")
+})
+const startMTButton = document.querySelector("#startMT")
+startMTButton?.addEventListener("click", () => {
+  mt.rodar()
 })
 

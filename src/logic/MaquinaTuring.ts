@@ -11,10 +11,16 @@ export type StatusMaquina = "Não iniciada"
   | "Pausada"
   | "Computando"
   | Parada
-export type Fita = [string, Estado, number] // Conteúdo da fita, Estado atual, posição do cabeçote
-export interface IAtualizacaoMaquina {
-  aplicarTransicao: (f: Fita, t: Transicao) => void
+export type Fita = {
+  conteudo: string
+  estadoAtual: Estado
+  cabecote: number
+}
+export interface IControladorMaquina {
+  iniciarMaquinaTuring: (w: string) => void
+  aplicarTransicao: (t: Transicao) => void
   finalizarComputacao: (p: Parada) => void
+  alterarTick: (t: Tick) => void
 }
 
 const isSimbolo = (str: string): str is Simbolo => /^.$/.test(str)
@@ -39,9 +45,9 @@ export default class MaquinaTuring {
   private _tick: Tick
   private _status: StatusMaquina
   private _fita: Fita
-  private atualizacao: IAtualizacaoMaquina
+  private controlador: IControladorMaquina
 
-  constructor(dados: IDadosMaquinaTuring, cb: IAtualizacaoMaquina) {
+  constructor(dados: IDadosMaquinaTuring, controlador: IControladorMaquina) {
     const { Q, δ, q_0, q_aceita, q_rejeita } = dados
 
     // Verifica se estados possuem espaço no nome
@@ -86,9 +92,13 @@ export default class MaquinaTuring {
 
     this._tick = 1
     this._status = "Não iniciada"
-    this._fita = ['', this._q_0, 0]
+    this._fita = {
+      conteudo: '',
+      estadoAtual: this.q_0,
+      cabecote: 0
+    }
 
-    this.atualizacao = cb
+    this.controlador = controlador
   }
 
   resetar() {
@@ -99,7 +109,11 @@ export default class MaquinaTuring {
     this._Σ = ''
 
     this._tick = 1
-    this._fita = ['', this._q_0, 0]
+    this._fita = {
+      conteudo: '',
+      estadoAtual: this.q_0,
+      cabecote: 0
+    }
     this._status = "Não iniciada"
   }
 
@@ -107,19 +121,26 @@ export default class MaquinaTuring {
     this._status = "Pausada"
   }
 
-  rodar(w: string) {
+  iniciar(w: string, t?: Tick) {
+    this._fita.conteudo = w
+    this._Σ = [... new Set(this._fita.conteudo)].sort().join('')
+    this._Γ = [...new Set(this._Γ.concat(this._Σ))].sort().join('')
+    this.controlador.iniciarMaquinaTuring(w)
+
+    if (t) this._tick = t
+  }
+
+  rodar() {
+    if (!this._fita.conteudo)
+      throw new Error("Não há palavra de entrada para ser computada!")
+
     console.log("Rodar executando!")
     
-    this._Σ = [... new Set(w)].sort().join('')
-    this._Γ = [...new Set(this._Γ.concat(this._Σ))].sort().join('')
-
-    this._fita[0] = w
-
     this._status = "Computando"
 
     const operacao = () => {
-      const [conteudoFita, estadoAtual, cabecote] = this._fita
-      const simboloAtual = conteudoFita[cabecote]
+      const { conteudo, estadoAtual, cabecote } = this._fita
+      const simboloAtual = conteudo[cabecote] ?? ' '
 
       // console.log("Computando...")
       // console.log("Conteudo da fita: ")
@@ -133,20 +154,20 @@ export default class MaquinaTuring {
 
       if (estadoAtual === this._q_aceita) {
         this._status = "Aceitou"
-        this.atualizacao.finalizarComputacao(this._status)
+        this.controlador.finalizarComputacao(this._status)
         return
       }
 
       if (estadoAtual === this._q_rejeita) {
         this._status = "Rejeitou, estado de rejeição"
-        this.atualizacao.finalizarComputacao(this._status)
+        this.controlador.finalizarComputacao(this._status)
         return
       }
 
       const transicao = this._δ.find(t => t[0] === estadoAtual && t[1] === simboloAtual)
       if (!transicao) {
         this._status = "Rejeitou por indefinição"
-        this.atualizacao.finalizarComputacao(this._status)
+        this.controlador.finalizarComputacao(this._status)
         return
       }
 
@@ -156,20 +177,20 @@ export default class MaquinaTuring {
       // console.log(`Simbolo de escrita: ${simbEscrita}`)
 
       // Atualizar o conteúdo da fita
-      const novoConteudoFita = conteudoFita.split('')
-      novoConteudoFita[cabecote] = simbEscrita
-      this._fita[0] = novoConteudoFita.join('')
+      this._fita.conteudo = this._fita.conteudo.slice(0, cabecote)
+        + simbEscrita
+        + this._fita.conteudo.slice(cabecote + 1)
 
       // Atualizar o estado atual
-      this._fita[1] = estDestino
+      this._fita.estadoAtual = estDestino
 
       // Atualizar pos. do cabeçote
       if (mov === "Direita")
-        this._fita[2] = cabecote + 1
+        this._fita.cabecote = cabecote + 1
       else if (mov === "Esquerda")
-        this._fita[2] = cabecote - 1 <= 0 ? 0 : cabecote - 1
+        this._fita.cabecote = cabecote - 1 <= 0 ? 0 : cabecote - 1
       
-      this.atualizacao.aplicarTransicao(this._fita, transicao)
+      this.controlador.aplicarTransicao(transicao)
 
       setTimeout(() => operacao(), 1000 / this._tick)
     }
@@ -178,7 +199,9 @@ export default class MaquinaTuring {
   }
 
   mudarTick(tick: Tick) {
+    this.controlador.alterarTick(tick)
     this._tick = tick
+
   }
 
   get Q(): Estado[] {
