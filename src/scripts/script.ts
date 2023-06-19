@@ -29,17 +29,18 @@ function criarControladorMT(
   const ulFita: HTMLUListElement = document.getElementById("fita") as HTMLUListElement
   let conteudo: string = ''
   let posAtual: number = 0
+  let posAnterior: number = 0
   let estadoAtual: Estado = dados.q_0
   let qtdTransicoesParaAtualizacao: number = 0
   let tick: Tick = 1
 
   ulFita.style.transitionDuration = `${(1000 / tick) * 0.75}ms`
 
-  let celulaAtual = preencherCelulasMT(ulFita, 0, conteudo)
+  let celulaAtual = preencherCelulasMT(ulFita, conteudo, [posAtual, posAnterior])
 
   function iniciarMaquinaTuring(w: string): void {
     conteudo = w
-    celulaAtual = preencherCelulasMT(ulFita, 0, conteudo)
+    celulaAtual = preencherCelulasMT(ulFita, conteudo, [posAtual, posAnterior])
   }
 
   function aplicarTransicao(t: Transicao): void {
@@ -48,7 +49,7 @@ function criarControladorMT(
     conteudo = conteudo.slice(0, posAtual) + simbEscrita + conteudo.slice(posAtual + 1)
     celulaAtual.innerText = simbEscrita
     estadoAtual = estDestino
-  
+
     if (mov === "Direita") {
       moverCabecoteDireita(ulFita)
       animarTransicaoCelula(celulaAtual, tick)
@@ -70,10 +71,12 @@ function criarControladorMT(
     }
 
     qtdTransicoesParaAtualizacao++
-    if (qtdTransicoesParaAtualizacao > 11) {
-      celulaAtual = preencherCelulasMT(ulFita, posAtual, conteudo)
+    if (qtdTransicoesParaAtualizacao > 32) {
+      celulaAtual = preencherCelulasMT(ulFita, conteudo, [posAtual, posAnterior])
+      posAnterior = posAtual
       qtdTransicoesParaAtualizacao = 0
     }
+  
   }
 
   function finalizarComputacao(p: Parada) {

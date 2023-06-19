@@ -143,14 +143,15 @@ export default class MaquinaTuring {
       const simboloAtual = conteudo[cabecote] ?? ' '
 
       // console.log("Computando...")
-      // console.log("Conteudo da fita: ")
-      // console.log(conteudoFita)
       // console.log("Estado atual: ")
       // console.log(estadoAtual)
       // console.log(`Posicao atual do cabecote: ${cabecote}`)
 
       if (this._status != "Computando")
         return
+      
+      if (cabecote > 1000)
+        throw new Error("A produção ficou muito longa (provavalmente a MT entrou em loop!)")
 
       if (estadoAtual === this._q_aceita) {
         this._status = "Aceitou"
@@ -191,6 +192,8 @@ export default class MaquinaTuring {
         this._fita.cabecote = cabecote - 1 <= 0 ? 0 : cabecote - 1
       
       this.controlador.aplicarTransicao(transicao)
+
+      // console.log("conteudo: " + conteudo)
 
       setTimeout(() => operacao(), 1000 / this._tick)
     }
