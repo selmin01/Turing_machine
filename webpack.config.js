@@ -3,19 +3,25 @@ const path = require("path")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 
 module.exports = {
-  entry: "./src/index.ts",
+  entry: {
+    global: "./src/index.ts",
+    main: "./src/scripts/machine_turing.ts",
+    turing_machine: "./src/scripts/script.ts",
+  },
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js"
+    filename: "[name].bundle.js"
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "src/pages/index.html",
-      filename: "index.html"
+      template: "./src/pages/index.html",
+      filename: "index.html",
+      chunks: ["global", "main"]
     }),
     new HtmlWebpackPlugin({
-      template: "src/pages/turing-machine.html",
-      filename: "turing-machine.html"
+      template: "./src/pages/turing-machine.html",
+      filename: "turing-machine.html",
+      chunks: ["global", "turing_machine"]
     })
   ],
   module: {

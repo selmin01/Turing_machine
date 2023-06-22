@@ -1,6 +1,8 @@
 import MaquinaTuring, { Estado, Fita, IControladorMaquina, IDadosMaquinaTuring, Parada, Tick, Transicao } from "../logic/MaquinaTuring"
 import { animarTransicaoCelula, falsoMovimentoAEsquerda, moverCabecoteDireita, moverCabecoteEsquerda, preencherCelulasMT } from "./ui"
 
+console.log("Hello from script.ts")
+
 // export interface IAtualizacaoMaquina {
 //   aplicarTransicao: (f: Fita, t: Transicao) => void
 //   finalizarComputacao: (p: Parada) => void
@@ -118,7 +120,7 @@ const mockDadosMaquina: IDadosMaquinaTuring = {
   q_aceita: "q4",
   q_rejeita: "q_rejeita",
 };
-
+  
 const mt = submitDadosMT(mockDadosMaquina)
 
 const initMTButton = document.querySelector("#initMT")
@@ -145,4 +147,3 @@ const tick8Button = document.querySelector("#tick8")
 tick8Button?.addEventListener("click", () => {
   mt.mudarTick(8)
 })
-
