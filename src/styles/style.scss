@@ -1,3 +1,59 @@
+.container {
+  display: flex;
+  height: 90vh; /* Define a altura total da tela */
+}
+
+.left-panel, .right-panel {
+  flex: 1; /* Distribui o espaço igualmente entre os painéis */
+}
+
+.left-panel {
+  background-color: #f1f1f1; /* Cor de fundo do painel esquerdo */
+}
+
+.right-panel {
+  background-color: #eaeaea; /* Cor de fundo do painel direito */
+}
+
+.centralized{
+  margin: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.quadro {
+  background-color: #000;
+  padding: 10px;
+  font-family: 'Courier New', monospace;
+  color: #0f0;
+}
+
+.container-start {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // height: 100vh;
+}
+
+.btn-start {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  font-family: 'AtariFont', sans-serif;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+}
+
+.btn-start:hover {
+  background-color: #0f0;
+}
+
+
+//////////////////////////////  /* Computação da máquina */ //////////////////////////////
 * {
   margin: 0;
   padding: 0;
