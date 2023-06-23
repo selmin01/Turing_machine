@@ -1,103 +1,14 @@
 import MaquinaTuring, { Estado, Fita, IControladorMaquina, IDadosMaquinaTuring, Parada, Tick, Transicao } from "../logic/MaquinaTuring"
-import { animarTransicaoCelula, falsoMovimentoAEsquerda, moverCabecoteDireita, moverCabecoteEsquerda, preencherCelulasMT } from "./ui"
+import ControladorUIFita from "./ui"
 
 console.log("Hello from script.ts")
 
-// export interface IAtualizacaoMaquina {
-//   aplicarTransicao: (f: Fita, t: Transicao) => void
-//   finalizarComputacao: (p: Parada) => void
-// }
-// export interface IDadosMaquinaTuring {
-//   Q: Estado[],
-//   δ: Transicao[],
-//   q_0: Estado,
-//   q_aceita: Estado
-//   q_rejeita: Estado
-// }
-
-// export interface IViewStatus {
-//   ulFita: HTMLUListElement
-//   conteudo: string
-//   celulaAtual: HTMLLIElement
-//   posAtual: number
-//   estadoAtual: Estado
-//   qtdTransicoesParaAtualizacao: number
-// }
-
-function criarControladorMT(
-  dados: IDadosMaquinaTuring
-): IControladorMaquina {
-  
-  const ulFita: HTMLUListElement = document.getElementById("fita") as HTMLUListElement
-  let conteudo: string = ''
-  let posAtual: number = 0
-  let posAnterior: number = 0
-  let estadoAtual: Estado = dados.q_0
-  let qtdTransicoesParaAtualizacao: number = 0
-  let tick: Tick = 1
-
-  ulFita.style.transitionDuration = `${(1000 / tick) * 0.75}ms`
-
-  let celulaAtual = preencherCelulasMT(ulFita, conteudo, [posAtual, posAnterior])
-
-  function iniciarMaquinaTuring(w: string): void {
-    conteudo = w
-    celulaAtual = preencherCelulasMT(ulFita, conteudo, [posAtual, posAnterior])
-  }
-
-  function aplicarTransicao(t: Transicao): void {
-    const [,, estDestino, simbEscrita, mov] = t
-
-    conteudo = conteudo.slice(0, posAtual) + simbEscrita + conteudo.slice(posAtual + 1)
-    celulaAtual.innerText = simbEscrita
-    estadoAtual = estDestino
-
-    if (mov === "Direita") {
-      moverCabecoteDireita(ulFita)
-      animarTransicaoCelula(celulaAtual, tick)
-      celulaAtual = celulaAtual.nextElementSibling as HTMLLIElement
-      posAtual++
-    }
-    else {
-      const celulaAnterior = celulaAtual.previousElementSibling as HTMLLIElement
-      if (celulaAnterior) {
-        moverCabecoteEsquerda(ulFita)
-        animarTransicaoCelula(celulaAtual, tick)
-        celulaAtual = celulaAnterior
-        posAtual--
-      } else {
-        falsoMovimentoAEsquerda(ulFita, tick)
-        animarTransicaoCelula(celulaAtual, tick)
-        console.log("Falso movimento a esquerda!")
-      }
-    }
-
-    qtdTransicoesParaAtualizacao++
-    if (qtdTransicoesParaAtualizacao > 32) {
-      celulaAtual = preencherCelulasMT(ulFita, conteudo, [posAtual, posAnterior])
-      posAnterior = posAtual
-      qtdTransicoesParaAtualizacao = 0
-    }
-  
-  }
-
-  function finalizarComputacao(p: Parada) {
-    console.log("Parou!")
-  }
-
-  function alterarTick(t: Tick) {
-    tick = t
-    const tickTime = (1000 / t) * 0.75
-    ulFita.style.transitionDuration = `${tickTime}ms`
-  }
-
-  return { iniciarMaquinaTuring, aplicarTransicao, finalizarComputacao, alterarTick }
-}
-
-
-
 export default function submitDadosMT(dados: IDadosMaquinaTuring): MaquinaTuring {
-  const controladorMT: IControladorMaquina = criarControladorMT(dados)
+  const fita: HTMLUListElement | null = document.querySelector("#fita")
+  if (!fita) throw new Error("Fita não identificada.")
+
+  const controladorMT: ControladorUIFita = new ControladorUIFita(fita)
+
   return new MaquinaTuring(dados, controladorMT)
 }
 
@@ -146,4 +57,12 @@ tick4Button?.addEventListener("click", () => {
 const tick8Button = document.querySelector("#tick8")
 tick8Button?.addEventListener("click", () => {
   mt.mudarTick(8)
+})
+const tick16Button = document.querySelector("#tick16")
+tick16Button?.addEventListener("click", () => {
+  mt.mudarTick(16)
+})
+const tick32Button = document.querySelector("#tick32")
+tick32Button?.addEventListener("click", () => {
+  mt.mudarTick(32)
 })
