@@ -1,4 +1,4 @@
-import { Estado, IControladorMaquina, Parada, Tick, Transicao } from "../logic/MaquinaTuring"
+import { Estado, IControladorMaquina, IDadosMaquinaTuring, Parada, Tick, Transicao } from "../logic/MaquinaTuring"
 
 type Cor = "preto"
   | "cinza"
@@ -12,6 +12,10 @@ interface IElementos {
   spanEstadoAtual: HTMLSpanElement
   spanTransicaoAtual: HTMLSpanElement
   spanSituacaoAtual: HTMLSpanElement
+  spanAlfabetoEntrada: HTMLSpanElement
+  spanAlfabetoFita: HTMLSpanElement
+  spanConjEstados: HTMLSpanElement
+  ulTransicoes: HTMLUListElement
 }
 
 export default class ControladorUIFita implements IControladorMaquina {
@@ -19,6 +23,10 @@ export default class ControladorUIFita implements IControladorMaquina {
   private _spanEstadoAtual: HTMLSpanElement
   private _spanTransicaoAtual: HTMLSpanElement
   private _spanSituacaoAtual: HTMLSpanElement
+  private _spanAlfabetoEntrada: HTMLSpanElement
+  private _spanAlfabetoFita: HTMLSpanElement
+  private _spanConjEstados: HTMLSpanElement
+  private _ulTransicoes: HTMLSpanElement
 
   private _posPx: number = 0
   private _tick: Tick = 1
@@ -143,6 +151,10 @@ export default class ControladorUIFita implements IControladorMaquina {
     this._spanEstadoAtual = elementos.spanEstadoAtual
     this._spanSituacaoAtual = elementos.spanSituacaoAtual
     this._spanTransicaoAtual = elementos.spanTransicaoAtual
+    this._spanAlfabetoEntrada = elementos.spanAlfabetoEntrada
+    this._spanAlfabetoFita = elementos.spanAlfabetoFita
+    this._spanConjEstados = elementos.spanConjEstados
+    this._ulTransicoes = elementos.ulTransicoes
 
     this._fita.style.transitionDuration = `${(1000 / this._tick) * 0.75}ms`
     
@@ -151,10 +163,12 @@ export default class ControladorUIFita implements IControladorMaquina {
 
   get p() { return this._posPx }
 
-  inicializarMaquinaTuring(w: string, e: Estado): void {
+  inicializarMaquinaTuring(dados: IDadosMaquinaTuring): void {
+    const { Q, Σ, Γ, δ, q0, qA, qR, w } = dados
+
     this._palavraEntrada = w
     this._conteudo = this._palavraEntrada
-    this._estadoInicial = e
+    this._estadoInicial = q0
     this._celulaAtual = this.preencherCelulas()
     
     this.setCor(this._spanSituacaoAtual, "amarelo")
@@ -165,6 +179,19 @@ export default class ControladorUIFita implements IControladorMaquina {
 
     this.setCor(this._spanTransicaoAtual, "cinza")
     this._spanTransicaoAtual.innerText = "N/A"
+
+    this._spanAlfabetoEntrada.innerText = `{'${Σ.split('').join("', '")}'}`
+    this._spanAlfabetoFita.innerText = `{'${Γ.split('').join("', '")}'}`
+    this._spanConjEstados.innerText = `{'${Q.join("', '")}'}`
+
+    const liElements = δ.map(
+      ([e1, s1, e2, s2, mov]) => {
+        const li = document.createElement("li")
+        li.innerText = `δ ('${e1}', '${s1}') = ('${e2}', '${s2}', '${mov}')`
+        return li
+      }
+    ).sort()
+    liElements.forEach(li => this._ulTransicoes.appendChild(li))
   }
 
   reinicializarMaquinaTuring(): void {

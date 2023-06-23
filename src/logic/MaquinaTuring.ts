@@ -16,8 +16,24 @@ export type Fita = {
   estadoAtual: Estado
   cabecote: number
 }
+export interface IEntradaMT {
+  δ: Transicao[],
+  q0: Estado,
+  qA: Estado
+  qR: Estado
+}
+export interface IDadosMaquinaTuring {
+  Q: Estado[]
+  Σ: Alfabeto
+  Γ: Alfabeto
+  δ: Transicao[]
+  q0: Estado
+  qA: Estado
+  qR: Estado
+  w: string
+}
 export interface IControladorMaquina {
-  inicializarMaquinaTuring: (w: string, e: Estado) => void
+  inicializarMaquinaTuring: (dados: IDadosMaquinaTuring) => void
   reinicializarMaquinaTuring: () => void
   iniciarComputacao: () => void
   pausarComputacao: () => void
@@ -28,31 +44,43 @@ export interface IControladorMaquina {
 
 const isSimbolo = (str: string): str is Simbolo => /^.$/.test(str)
 
-export interface IDadosMaquinaTuring {
-  Q: Estado[],
-  δ: Transicao[],
-  q_0: Estado,
-  q_aceita: Estado
-  q_rejeita: Estado
-}
 
 export default class MaquinaTuring {
   private _Q: Estado[]
   private _Σ: Alfabeto
   private _Γ: Alfabeto
   private _δ: Transicao[]
-  private _q_0: Estado
-  private _q_aceita: Estado
-  private _q_rejeita: Estado
-
+  private _q0: Estado
+  private _qA: Estado
+  private _qR: Estado
   private _palavraEntrada: string = ""
   private _tick: Tick
   private _status: StatusMaquina
   private _fita: Fita
   private controlador: IControladorMaquina
 
-  constructor(dados: IDadosMaquinaTuring, controlador: IControladorMaquina) {
-    const { Q, δ, q_0, q_aceita, q_rejeita } = dados
+  private getDados(): IDadosMaquinaTuring {
+    return {
+      Q: this._Q,
+      Σ: this._Σ,
+      Γ: this._Γ,
+      δ: this._δ,
+      q0: this._q0,
+      qA: this._qA,
+      qR: this._qR,
+      w: this._palavraEntrada
+    }
+  }
+
+  constructor(dados: IEntradaMT, controlador: IControladorMaquina) {
+    const { δ, q0, qA, qR } = dados
+
+    const Q: Estado[] = [
+      ...new Set(
+        δ.flatMap(([e1, s1, e2, s2, mov]) => [e1, e2])
+          .concat([q0, qA, qR])
+      )
+    ].sort()
 
     // Verifica se estados possuem espaço no nome
     if (Q.some(estado => estado.includes(" ")))
@@ -63,11 +91,11 @@ export default class MaquinaTuring {
       throw new Error("Estados devem ter nomes diferentes!")
     
     // Verifica se os três estados especiais estão contidos no conjunto de estados
-    if (!(Q.includes(q_0) && Q.includes(q_aceita) && Q.includes(q_rejeita)))
+    if (!(Q.includes(q0) && Q.includes(qA) && Q.includes(qR)))
       throw new Error("Os estados iniciais, de aceitação e de rejeição devem estar contidos no conjunto de estados!")
     
     // Verifica se os estados de aceitação e rejeição são diferentes
-    if (!(q_aceita !== q_rejeita))
+    if (!(qA !== qR))
       throw new Error("Os estados de aceitação e de rejeição devem ser diferentes!")
     
     // Verifica se há duas possibilidades para a mesma transição
@@ -84,9 +112,9 @@ export default class MaquinaTuring {
 
     this._Q = Q
     this._δ = δ
-    this._q_0 = q_0
-    this._q_aceita = q_aceita
-    this._q_rejeita = q_rejeita
+    this._q0 = q0
+    this._qA = qA
+    this._qR = qR
 
     // this._Γ = [...new Set(this._δ.flatMap(([i1, s1, i2, s2]) => [s1, s2]))]
     //   .concat(' ')
@@ -99,7 +127,7 @@ export default class MaquinaTuring {
     this._status = "Não iniciada"
     this._fita = {
       conteudo: '',
-      estadoAtual: this.q_0,
+      estadoAtual: this._q0,
       cabecote: 0
     }
 
@@ -114,7 +142,7 @@ export default class MaquinaTuring {
   reinicializar() {
     this._fita.conteudo = this._palavraEntrada
     this._fita.cabecote = 0
-    this._fita.estadoAtual = this._q_0
+    this._fita.estadoAtual = this._q0
 
     this._status = "Não iniciada"
 
@@ -125,7 +153,7 @@ export default class MaquinaTuring {
     this._palavraEntrada = w
     this._fita.conteudo = w
     this._fita.cabecote = 0
-    this._fita.estadoAtual = this._q_0
+    this._fita.estadoAtual = this._q0
 
     // O alfabeto de entrada é o conjunto de símbolos que aparecem na entrada
     this._Σ = [... new Set(this._palavraEntrada)].sort().join('')
@@ -139,7 +167,7 @@ export default class MaquinaTuring {
 
     this._status = "Não iniciada"
     
-    this.controlador.inicializarMaquinaTuring(w, this._q_0)
+    this.controlador.inicializarMaquinaTuring(this.getDados())
 
     if (t) this._tick = t
   }
@@ -164,13 +192,13 @@ export default class MaquinaTuring {
       if (cabecote > 1000)
         throw new Error("A produção ficou muito longa (provavalmente a MT entrou em loop!)")
 
-      if (estadoAtual === this._q_aceita) {
+      if (estadoAtual === this._qA) {
         this._status = "Aceitou"
         this.controlador.finalizarComputacao(this._status)
         return
       }
 
-      if (estadoAtual === this._q_rejeita) {
+      if (estadoAtual === this._qR) {
         this._status = "Rejeitou, estado de rejeição"
         this.controlador.finalizarComputacao(this._status)
         return
@@ -233,16 +261,16 @@ export default class MaquinaTuring {
     return this._δ;
   }
 
-  get q_0(): Estado {
-    return this._q_0;
+  get q0(): Estado {
+    return this._q0;
   }
 
-  get q_aceita(): Estado {
-    return this._q_aceita;
+  get qA(): Estado {
+    return this._qA;
   }
 
-  get q_rejeita(): Estado {
-    return this._q_rejeita;
+  get qR(): Estado {
+    return this._qR;
   }
 
   get palavraEntrada(): string {

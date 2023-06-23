@@ -12,7 +12,7 @@
     <!-- Ícone com id "settings" aqui - será inserido usando JavaScript -->
   </a>
 
-  <div id="palavra-entrada" class="pt-2 pb-5">
+  <div id="palavra-entrada">
     <h5 class="mb-3 text-center">Palavra de entrada</h5>
     <div class="d-flex align-items-center gap-2">
       <input 
@@ -104,8 +104,51 @@
     </div>
   </div>
 
+  
   <div id="dados-mt">
-
+    <h3 class="mb-4 text-center">Dados da MT: (Q, Σ, Γ, δ, q0, qA, qR)</h3>
+    <div id="dados">
+      <div id="alfabeto-entrada">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title py-0 my-0 text-center">Σ - Alfabeto de entrada</h5>
+            <span id="alfabeto-entrada-content" class="mt-2 d-block text-center fw-bold" >
+              
+            </span>
+          </div>
+        </div>
+      </div>
+      <div id="alfabeto-fita">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title py-0 my-0 text-center">Γ - Alfabeto da fita</h5>
+            <span id="alfabeto-fita-content" class="mt-2 d-block text-center fw-bold">
+              
+            </span>
+          </div>
+        </div>
+      </div>
+      <div id="conjunto-estados">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title py-0 my-0 text-center">Q - Conjunto de estados</h5>
+            <span id="conjunto-estados-content" class="mt-2 d-block text-center fw-bold">
+              
+            </span>
+          </div>
+        </div>
+      </div>
+      <div id="transicoes">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title py-0 my-0 text-center">δ - Transições</h5>
+            <ul id="transicoes-content" class="mt-2 d-block text-center fw-bold">
+              
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   </div><!-- viewport -->

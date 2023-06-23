@@ -92,7 +92,7 @@ ul, li {
   display: flex;
   flex-direction: column;
   align-items: center;
-  // gap: 32px;
+  gap: 76px;
 
   #settings {
     position: absolute;
@@ -104,7 +104,7 @@ ul, li {
 }
 
 #maquina-turing {
-  padding: 32px 0;
+  // padding: 32px 0;
   position: relative;
   width: 100%;
   overflow: hidden;
@@ -224,7 +224,25 @@ ul, li {
 }
 
 #dados-correntes-mt {
-  width: 80%;
-  justify-content: space-evenly;
   display: flex;
+  justify-content: center;
+  gap: 32px;
+  width: 80%;
+}
+
+#dados-mt {  
+  #dados {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    
+    & > * {
+      .card {
+        height: 180px;
+        overflow-y: scroll;
+      }
+      flex-basis: calc(50% - 4px);
+    }
+  }
+
 }

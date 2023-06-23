@@ -1,4 +1,4 @@
-import MaquinaTuring, { Estado, Fita, IControladorMaquina, IDadosMaquinaTuring, Parada, Tick, Transicao } from "../logic/MaquinaTuring"
+import MaquinaTuring, { Estado, Fita, IControladorMaquina, IDadosMaquinaTuring, IEntradaMT, Parada, Tick, Transicao } from "../logic/MaquinaTuring"
 import Icons from "./icons"
 import ControladorUIFita from "./ui"
 
@@ -8,32 +8,58 @@ console.log("Hello from script.ts")
 const settingsAnchor = document.querySelector("#settings")
 settingsAnchor?.appendChild(Icons.settingsIcon(48, "#111414"))
 
-export default function submitDadosMT(dados: IDadosMaquinaTuring): MaquinaTuring {
-  const fita: HTMLUListElement | null = document.querySelector("#fita")
+export default function submitDadosMT(dados: IEntradaMT): MaquinaTuring {
+  const fita: HTMLUListElement | null =
+    document.querySelector("#fita")
   if (!fita) throw new Error("Fita não identificada.")
+
   const spanEstadoAtual: HTMLSpanElement | null =
     document.querySelector("#estado-atual-content")
   if (!spanEstadoAtual) throw new Error("Span de estado atual não identificado.")
+
   const spanSituacaoAtual: HTMLSpanElement | null =
     document.querySelector("#situacao-atual-content")
   if (!spanSituacaoAtual) throw new Error("Span de situacao atual não identificado.")
+
   const spanTransicaoAtual: HTMLSpanElement | null =
     document.querySelector("#transicao-atual-content")
   if (!spanTransicaoAtual) throw new Error("Span de transicao atual não identificado.")
 
+  const spanAlfabetoEntrada: HTMLSpanElement | null =
+    document.querySelector("#alfabeto-entrada-content")
+  if (!spanAlfabetoEntrada) throw new Error("Span de alfabeto de entrada não identificado.")
+
+  const spanAlfabetoFita: HTMLSpanElement | null =
+    document.querySelector("#alfabeto-fita-content")
+  if (!spanAlfabetoFita) throw new Error("Span de alfabeto da fita não identificado.")
+
+  const spanConjEstados: HTMLSpanElement | null =
+    document.querySelector("#conjunto-estados-content")
+  if (!spanConjEstados) throw new Error("Span de conjunto de estados não identificado.")
+
+  const ulTransicoes: HTMLUListElement | null =
+    document.querySelector("#transicoes-content")
+  if (!ulTransicoes) throw new Error("UL do conjunto de transicoes não identificado.")
+
   const controladorMT: IControladorMaquina = new ControladorUIFita({
-    fita, spanEstadoAtual, spanSituacaoAtual, spanTransicaoAtual
+    fita,
+    spanEstadoAtual,
+    spanSituacaoAtual,
+    spanTransicaoAtual,
+    spanAlfabetoEntrada,
+    spanAlfabetoFita,
+    spanConjEstados,
+    ulTransicoes
   })
 
   return new MaquinaTuring(dados, controladorMT)
 }
 
-const mockDadosMaquina: IDadosMaquinaTuring = {
-  Q: ["q0", "q1", "q2", "q3", "q4", "q_rejeita"],
+const mockDadosMaquina: IEntradaMT = {
   δ: [
     ["q0", "0", "q0", "1", "Direita"], // Stay in q0 and write 1, move right
     ["q0", "1", "q0", "0", "Direita"], // Stay in q0 and write 0, move right
-    ["q0", " ", "q1", "1", "Esquerda"], // Move to q1 and write 1, move left
+    ["q0", " ", "q4", "1", "Esquerda"], // Move to q1 and write 1, move left
     ["q1", "0", "q2", "1", "Esquerda"], // Move to q2 and write 1, move left
     ["q1", "1", "q1", "0", "Esquerda"], // Stay in q1 and write 0, move left
     ["q2", "0", "q2", "0", "Esquerda"], // Stay in q2 and write 0, move left
@@ -43,9 +69,9 @@ const mockDadosMaquina: IDadosMaquinaTuring = {
     ["q3", "1", "q3", "1", "Direita"], // Stay in q3 and write 1, move right
     ["q3", " ", "q4", " ", "Esquerda"], // Move to q4, write blank, stop
   ],
-  q_0: "q0",
-  q_aceita: "q4",
-  q_rejeita: "q_rejeita",
+  q0: "q0",
+  qA: "q4",
+  qR: "q_rejeita",
 };
 
 let mt = submitDadosMT(mockDadosMaquina)
