@@ -167,23 +167,15 @@ export default class ControladorUIFita implements IControladorMaquina {
     const { Q, Σ, Γ, δ, q0, qA, qR, w } = dados
 
     this._palavraEntrada = w
-    this._conteudo = this._palavraEntrada
     this._estadoInicial = q0
-    this._celulaAtual = this.preencherCelulas()
-    
-    this.setCor(this._spanSituacaoAtual, "amarelo")
-    this._spanSituacaoAtual.innerText = "Aguardando"
-
-    this.setCor(this._spanEstadoAtual, "azul")
-    this._spanEstadoAtual.innerText = this._estadoInicial
-
-    this.setCor(this._spanTransicaoAtual, "cinza")
-    this._spanTransicaoAtual.innerText = "N/A"
 
     this._spanAlfabetoEntrada.innerText = `{'${Σ.split('').join("', '")}'}`
     this._spanAlfabetoFita.innerText = `{'${Γ.split('').join("', '")}'}`
     this._spanConjEstados.innerText = `{'${Q.join("', '")}'}`
 
+    this.reinicializarMaquinaTuring()
+
+    this._ulTransicoes.innerHTML = ""
     const liElements = δ.map(
       ([e1, s1, e2, s2, mov]) => {
         const li = document.createElement("li")
@@ -200,6 +192,10 @@ export default class ControladorUIFita implements IControladorMaquina {
     this._conteudo = this._palavraEntrada
     this._posPx = 0
     this._celulaAtual = this.preencherCelulas()
+
+    this.setCor(this._spanEstadoAtual, "azul")
+    this.setCor(this._spanTransicaoAtual, "azul")
+    this.setCor(this._fita, "preto")
 
     this.setCor(this._spanSituacaoAtual, "amarelo")
     this._spanSituacaoAtual.innerText = "Aguardando"
@@ -255,10 +251,10 @@ export default class ControladorUIFita implements IControladorMaquina {
       this._qtdTransicoesParaAtualizacao = 0
     }
 
-    this.setCor(this._spanEstadoAtual, "azul")
+    
+
     this._spanEstadoAtual.innerText = estadoDestino
 
-    this.setCor(this._spanTransicaoAtual, "azul")
     this._spanTransicaoAtual.innerText = `δ(${estadoOrigem}, '${simbLeitura}') = (${estadoDestino}, '${simbEscrita}', ${mov})`
   }
 
@@ -266,9 +262,11 @@ export default class ControladorUIFita implements IControladorMaquina {
     switch (p) {
       case "Aceitou":
         this.setCor(this._spanSituacaoAtual, "verde")
+        this.setCor(this._fita, "verde")
         break
       default:
         this.setCor(this._spanSituacaoAtual, "vermelho")
+        this.setCor(this._fita, "vermelho")
         break
     }
       this._spanSituacaoAtual.innerText = p
