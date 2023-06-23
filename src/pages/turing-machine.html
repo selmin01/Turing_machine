@@ -12,6 +12,19 @@
     <!-- Ícone com id "settings" aqui - será inserido usando JavaScript -->
   </a>
 
+  <div id="palavra-entrada" class="pt-2 pb-5">
+    <h5 class="mb-3 text-center">Palavra de entrada</h5>
+    <div class="d-flex align-items-center gap-2">
+      <input 
+        id="inputPalavra"
+        type="text" 
+        placeholder="Insira sua palavra de entrada aqui" 
+        class="form-control" 
+      />
+      <button id="inserirPalavra" class="btn btn-primary">Inserir</button>
+    </div>
+  </div>
+
   <div id="maquina-turing">
     <div id="fita-container">
       <ul id="fita"> <!-- Fita -->
@@ -29,46 +42,41 @@
         </li>
       </ul>
     </div>
-    <svg style="transform: rotate(-90deg)" xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48">
-      <path fill="#111414" d="m304-82-56-57 343-343-343-343 56-57 400 400L304-82Z"/>
-    </svg><!-- Seta do cabeçote -->
-  </div>
 
-  <div id="control-bar">
-
-    <div id="play-pause-reset">
-      <button id="play-pause">
-        <!-- Ícone play-pause - A ser inserido dinamicamente -->
-      </button>
-      <button id="reset">
-        <!-- Ícone reset - A ser inserido dinamicamente -->
-      </button>
+    <div id="control-bar">
+  
+      <div id="play-pause-reset">
+        <button id="play-pause">
+          <!-- Ícone play-pause - A ser inserido dinamicamente -->
+        </button>
+        <button id="reset">
+          <!-- Ícone reset - A ser inserido dinamicamente -->
+        </button>
+      </div>
+  
+      <div id="seta-cabecote">
+        <svg style="transform: rotate(-90deg)" xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48">
+          <path fill="#111414" d="m304-82-56-57 343-343-343-343 56-57 400 400L304-82Z"/>
+        </svg><!-- Seta do cabeçote -->
+      </div>
+  
+      <div id="control-speed">
+        <button id="rewind">
+          <!-- Ícone de desaceleração - A ser inserido dinamicamente -->
+        </button>
+  
+        <span id="speed">
+  
+        </span>
+  
+        <button id="forward">
+          <!-- Ícone de aceleração - A ser inserido dinamicamente -->
+        </button>
+      </div>
+  
     </div>
-
-    <div id="control-speed">
-      <button id="rewind">
-        <!-- Ícone de desaceleração - A ser inserido dinamicamente -->
-      </button>
-
-      <span id="speed">
-
-      </span>
-
-      <button id="forward">
-        <!-- Ícone de aceleração - A ser inserido dinamicamente -->
-      </button>
-    </div>
-
+    
   </div>
-
-    <button id="initMT">Adicionar 0101 à máquina</button>
-    <!-- <button id="startMT">Iniciar computação</button>
-    <button id="tick1">Tick 1</button>
-    <button id="tick2">Tick 2</button>
-    <button id="tick4">Tick 4</button>
-    <button id="tick8">Tick 8</button>
-    <button id="tick16">Tick 16</button>
-    <button id="tick32">Tick 32</button> -->
   </div>
 </body>
 </html>

@@ -62,15 +62,18 @@
 
 ul, li {
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .viewport {
+  padding-top: 96px;
   width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 32px;
 
   #settings {
     position: absolute;
@@ -106,6 +109,7 @@ ul, li {
       #ffffff 100%
     );
     opacity: 1;
+    pointer-events: none;
   }
 
   #fita-container {
@@ -149,15 +153,22 @@ ul, li {
   width: 100%;
   padding: 0 128px;
   @media (min-width: 600px) {
-    width: 400px;
+    width: 600px;
     padding: 0;
   }
 
-  #speed {
+  #control-speed {
     display: flex;
-    align-items: center;
-    font-weight: bold;
+    gap: 0;
+    span#speed {
+      display: flex;
+      width: 64px;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
   }
+
 
   svg {
     display: block;
@@ -171,8 +182,10 @@ ul, li {
   }
 
   & > * {
+    flex-basis: 0;
+    flex-grow: 1;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     gap: 8px;
   }

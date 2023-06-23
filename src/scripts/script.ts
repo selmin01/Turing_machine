@@ -36,45 +36,17 @@ const mockDadosMaquina: IDadosMaquinaTuring = {
   q_aceita: "q4",
   q_rejeita: "q_rejeita",
 };
-  
-
-
-
-// const startMTButton = document.querySelector("#startMT")
-// startMTButton?.addEventListener("click", () => {
-//   mt.rodar()
-// })
-// const tick1Button = document.querySelector("#tick1")
-// tick1Button?.addEventListener("click", () => {
-//   mt.mudarTick(1)
-// })
-// const tick2Button = document.querySelector("#tick2")
-// tick2Button?.addEventListener("click", () => {
-//   mt.mudarTick(2)
-// })
-// const tick4Button = document.querySelector("#tick4")
-// tick4Button?.addEventListener("click", () => {
-//   mt.mudarTick(4)
-// })
-// const tick8Button = document.querySelector("#tick8")
-// tick8Button?.addEventListener("click", () => {
-//   mt.mudarTick(8)
-// })
-// const tick16Button = document.querySelector("#tick16")
-// tick16Button?.addEventListener("click", () => {
-//   mt.mudarTick(16)
-// })
-// const tick32Button = document.querySelector("#tick32")
-// tick32Button?.addEventListener("click", () => {
-//   mt.mudarTick(32)
-// })
 
 let mt = submitDadosMT(mockDadosMaquina)
 
 // Inserir palavra de entrada na MT
-const initMTButton = document.querySelector("#initMT")
-initMTButton?.addEventListener("click", () => {
-  mt.inicializar("0101")
+const inserirPalavraButton = document.querySelector("#inserirPalavra")
+inserirPalavraButton?.addEventListener("click", () => {
+  const inputPalavra: HTMLInputElement | null = document.querySelector("#inputPalavra")
+
+  if (!inputPalavra) throw new Error("O input da palavra de entrada não foi identificado.")
+
+  mt.inicializar(inputPalavra.value)
 })
 
 // Ícone de play/pause
@@ -111,7 +83,7 @@ resetButton.addEventListener("click", () => {
 // Mostrador de velociade
 const speed: HTMLSpanElement | null = document.querySelector("#speed")
 if (!speed) throw new Error("Mostrador de velocidade não encontrado.")
-speed.innerText = "x1.0"
+speed.innerText = "x1"
 
 // Ícone de desaceleração (fast rewind)
 const rewindButton = document.querySelector("#rewind")
