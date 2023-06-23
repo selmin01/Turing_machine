@@ -47,6 +47,7 @@ console.log("Hello from machine_turing")
 //   // console.log('Email:', tipo);
 // });
 console.log("okkk");
+const infoList: string[] = [];
 
 const form = document.querySelector('#cadastroEstado') as HTMLFormElement;
 console.log(form);
@@ -73,20 +74,21 @@ function handleSubmit(event: SubmitEvent) {
                                 Escreve: ${escrita}, <br>
                                 Vai: ${movimento}`;
 
-    const infoList: string[] = [];
-    infoList.push(listItem.textContent);
+    if(infoList){
+        infoList.push(listItem.textContent);
+        console.log(infoList);
+    }
 
     // Exibe os valores dos campos na div "right-panel"
     const rightPanelElement = document.querySelector("#quadro");
     if (rightPanelElement) {
-        rightPanelElement.innerHTML += `=> Estado: ${estado}<br>Tipo: ${tipo}`;
-        infoList.forEach(element => {
-            rightPanelElement.innerHTML += `[${element}]`;
-        });
+        rightPanelElement.innerHTML = `=> Estado: ${estado}<br>Tipo: ${tipo}`;
+        rightPanelElement.innerHTML = `[${infoList}]`;
+        // infoList.forEach(element => {
+        //     rightPanelElement.innerHTML = `[${element}]`;
+        // });
     }
   
-    // Faça o que precisa ser feito com os dados do formulário
-    console.log(estado, tipo);
 }
   
 

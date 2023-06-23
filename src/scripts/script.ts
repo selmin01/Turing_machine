@@ -1,7 +1,11 @@
 import MaquinaTuring, { Estado, Fita, IControladorMaquina, IDadosMaquinaTuring, Parada, Tick, Transicao } from "../logic/MaquinaTuring"
+import Icons from "./icons"
 import ControladorUIFita from "./ui"
 
 console.log("Hello from script.ts")
+
+const settingsAnchor = document.querySelector("#settings")
+settingsAnchor?.appendChild(Icons.settingsIcon(48, "#111414"))
 
 export default function submitDadosMT(dados: IDadosMaquinaTuring): MaquinaTuring {
   const fita: HTMLUListElement | null = document.querySelector("#fita")
