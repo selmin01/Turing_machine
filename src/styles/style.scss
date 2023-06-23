@@ -66,14 +66,33 @@ ul, li {
   padding: 0;
 }
 
+.cor-preto {
+  color: #111414;
+}
+.cor-cinza {
+  color: #00000060;
+}
+.cor-vermelho {
+  color: #dc3545;
+}
+.cor-azul {
+  color: #0d6efd;
+}
+.cor-verde {
+  color: #14A44D;
+}
+.cor-amarelo {
+  color: #E4A11B;
+}
+
 .viewport {
-  padding-top: 96px;
+  padding-top: 48px;
   width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
+  // gap: 32px;
 
   #settings {
     position: absolute;
@@ -85,6 +104,7 @@ ul, li {
 }
 
 #maquina-turing {
+  padding: 32px 0;
   position: relative;
   width: 100%;
   overflow: hidden;
@@ -150,11 +170,23 @@ ul, li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  padding: 0 128px;
-  @media (min-width: 600px) {
-    width: 600px;
-    padding: 0;
+  width: 600px;
+  padding: 0;
+
+  @media (max-width: 599px) {
+    flex-direction: column;
+    width: 100%;
+    padding: 0 48px;
+
+    & > :nth-child(1) {
+      order: 2
+    }
+    & > :nth-child(2) {
+      order: 1;
+    }
+    & > :nth-child(3) {
+      order: 3;
+    }
   }
 
   #control-speed {
@@ -189,4 +221,10 @@ ul, li {
     align-items: center;
     gap: 8px;
   }
+}
+
+#dados-correntes-mt {
+  width: 80%;
+  justify-content: space-evenly;
+  display: flex;
 }

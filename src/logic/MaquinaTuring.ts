@@ -17,8 +17,10 @@ export type Fita = {
   cabecote: number
 }
 export interface IControladorMaquina {
-  inicializarMaquinaTuring: (w: string) => void
+  inicializarMaquinaTuring: (w: string, e: Estado) => void
   reinicializarMaquinaTuring: () => void
+  iniciarComputacao: () => void
+  pausarComputacao: () => void
   aplicarTransicao: (t: Transicao) => void
   finalizarComputacao: (p: Parada) => void
   alterarTick: (t: Tick) => void
@@ -106,6 +108,7 @@ export default class MaquinaTuring {
 
   pausar() {
     this._status = "Pausada"
+    this.controlador.pausarComputacao()
   }
 
   reinicializar() {
@@ -136,7 +139,7 @@ export default class MaquinaTuring {
 
     this._status = "Não iniciada"
     
-    this.controlador.inicializarMaquinaTuring(w)
+    this.controlador.inicializarMaquinaTuring(w, this._q_0)
 
     if (t) this._tick = t
   }
@@ -148,6 +151,8 @@ export default class MaquinaTuring {
     console.log("Rodar executando!")
     
     this._status = "Computando"
+
+    this.controlador.iniciarComputacao()
 
     const operacao = () => {
       const { conteudo, estadoAtual, cabecote } = this._fita

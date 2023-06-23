@@ -1,16 +1,36 @@
-import { IControladorMaquina, Parada, Tick, Transicao } from "../logic/MaquinaTuring"
+import { Estado, IControladorMaquina, Parada, Tick, Transicao } from "../logic/MaquinaTuring"
 
-export default class ControladorUIFita {
+type Cor = "preto"
+  | "cinza"
+  | "vermelho"
+  | "azul"
+  | "verde"
+  | "amarelo"
+
+interface IElementos {
+  fita: HTMLUListElement
+  spanEstadoAtual: HTMLSpanElement
+  spanTransicaoAtual: HTMLSpanElement
+  spanSituacaoAtual: HTMLSpanElement
+}
+
+export default class ControladorUIFita implements IControladorMaquina {
   private _fita: HTMLUListElement
+  private _spanEstadoAtual: HTMLSpanElement
+  private _spanTransicaoAtual: HTMLSpanElement
+  private _spanSituacaoAtual: HTMLSpanElement
+
   private _posPx: number = 0
   private _tick: Tick = 1
   private _celulaAtual: HTMLLIElement
   private _conteudo: string = ''
-  private _palavraEntrada: string = ''
   private _posAtual: number = 0
   private _posAnterior: number = 0
   private _qtdTransicoesParaAtualizacao: number = 0
   private _qtdElementsEachSide = 64
+
+  private _palavraEntrada: string = ''
+  private _estadoInicial: Estado = ''
 
   private direita() {
     this._posPx -= 60
@@ -113,8 +133,17 @@ export default class ControladorUIFita {
     }, 10)
   }
 
-  constructor(fita: HTMLUListElement) {
-    this._fita = fita
+  private setCor(element: HTMLElement, cor: Cor) {
+    element.className = element.className.replace(/(^|\s)cor-\w+/g, "").trim()
+    element.classList.add(`cor-${cor}`)
+  }
+
+  constructor(elementos: IElementos) {
+    this._fita = elementos.fita
+    this._spanEstadoAtual = elementos.spanEstadoAtual
+    this._spanSituacaoAtual = elementos.spanSituacaoAtual
+    this._spanTransicaoAtual = elementos.spanTransicaoAtual
+
     this._fita.style.transitionDuration = `${(1000 / this._tick) * 0.75}ms`
     
     this._celulaAtual = this.preencherCelulas()
@@ -122,10 +151,20 @@ export default class ControladorUIFita {
 
   get p() { return this._posPx }
 
-  inicializarMaquinaTuring(w: string): void {
+  inicializarMaquinaTuring(w: string, e: Estado): void {
     this._palavraEntrada = w
     this._conteudo = this._palavraEntrada
+    this._estadoInicial = e
     this._celulaAtual = this.preencherCelulas()
+    
+    this.setCor(this._spanSituacaoAtual, "amarelo")
+    this._spanSituacaoAtual.innerText = "Aguardando"
+
+    this.setCor(this._spanEstadoAtual, "azul")
+    this._spanEstadoAtual.innerText = this._estadoInicial
+
+    this.setCor(this._spanTransicaoAtual, "cinza")
+    this._spanTransicaoAtual.innerText = "N/A"
   }
 
   reinicializarMaquinaTuring(): void {
@@ -134,10 +173,29 @@ export default class ControladorUIFita {
     this._conteudo = this._palavraEntrada
     this._posPx = 0
     this._celulaAtual = this.preencherCelulas()
+
+    this.setCor(this._spanSituacaoAtual, "amarelo")
+    this._spanSituacaoAtual.innerText = "Aguardando"
+
+    this.setCor(this._spanEstadoAtual, "azul")
+    this._spanEstadoAtual.innerText = this._estadoInicial || "N/A"
+
+    this.setCor(this._spanTransicaoAtual, "cinza")
+    this._spanTransicaoAtual.innerText = "N/A"
+  }
+
+  iniciarComputacao() {
+    this.setCor(this._spanSituacaoAtual, "verde")
+    this._spanSituacaoAtual.innerText = "Computando"
+  }
+
+  pausarComputacao() {
+    this.setCor(this._spanSituacaoAtual, "amarelo")
+    this._spanSituacaoAtual.innerText = "Pausado"
   }
 
   aplicarTransicao(t: Transicao): void {
-    const [,,, simbEscrita, mov] = t
+    const [estadoOrigem, simbLeitura, estadoDestino, simbEscrita, mov] = t
 
     this._conteudo = this._conteudo.slice(0, this._posAtual)
       + simbEscrita
@@ -169,11 +227,24 @@ export default class ControladorUIFita {
       this._posAnterior = this._posAtual
       this._qtdTransicoesParaAtualizacao = 0
     }
-  
+
+    this.setCor(this._spanEstadoAtual, "azul")
+    this._spanEstadoAtual.innerText = estadoDestino
+
+    this.setCor(this._spanTransicaoAtual, "azul")
+    this._spanTransicaoAtual.innerText = `δ(${estadoOrigem}, '${simbLeitura}') = (${estadoDestino}, '${simbEscrita}', ${mov})`
   }
 
   finalizarComputacao(p: Parada) {
-    console.log("Parou!")
+    switch (p) {
+      case "Aceitou":
+        this.setCor(this._spanSituacaoAtual, "verde")
+        break
+      default:
+        this.setCor(this._spanSituacaoAtual, "vermelho")
+        break
+    }
+      this._spanSituacaoAtual.innerText = p
   }
 
   alterarTick(t: Tick) {
