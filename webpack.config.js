@@ -1,6 +1,7 @@
 const path = require("path")
 
 const HtmlWebpackPlugin = require("html-webpack-plugin")
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
 module.exports = {
   entry: {
@@ -22,7 +23,8 @@ module.exports = {
       template: "./src/pages/turing-machine.html",
       filename: "turing-machine.html",
       chunks: ["global", "turing_machine"]
-    })
+    }),
+    new MiniCssExtractPlugin()
   ],
   module: {
     rules: [
@@ -36,6 +38,10 @@ module.exports = {
         test: /\.scss$/,
         use: ["style-loader", "css-loader", "sass-loader"],
         exclude: /node_modules/
+      },
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, "css-loader"]
       }
     ]
   },
