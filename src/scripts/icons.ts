@@ -11,6 +11,31 @@ export default class Icons {
     viewBox: [0, -960, 960, 960]
   }
   
+  private static _playIcon: IconProps = {
+    path: "M320-202v-560l440 280-440 280Z",
+    viewBox: [0, -960, 960, 960]
+  }
+  
+  private static _pauseIcon: IconProps = {
+    path: "M556.667-200v-560h170v560h-170Zm-323.334 0v-560h170v560h-170Z",
+    viewBox: [0, -960, 960, 960]
+  }
+  
+  private static _resetIcon: IconProps = {
+    path: "M480-100.001q-70.769 0-132.615-26.462-61.846-26.461-108.153-72.769-46.308-46.307-72.769-108.153Q140.001-369.231 140.001-440h45.384q0 122.692 85.961 208.654Q357.308-145.385 480-145.385t208.654-85.961Q774.615-317.308 774.615-440t-84.038-208.654q-84.039-85.961-206.731-85.961h-23.385l71.846 71.461-31.383 31.615L373.54-759.307l128.153-127.768 31.384 31L457-779.999h23q70.769 0 132.615 26.462 61.846 26.461 108.153 72.769 46.308 46.307 72.769 108.153Q819.999-510.769 819.999-440t-26.462 132.615q-26.461 61.846-72.769 108.153-46.307 46.308-108.153 72.769Q550.769-100.001 480-100.001Z",
+    viewBox: [0, -960, 960, 960]
+  }
+  
+  private static _fastForwardIcon: IconProps = {
+    path: "M134.771-267.694v-424.612L443.076-480 134.771-267.694Zm382.768 0v-424.612L825.844-480 517.539-267.694Z",
+    viewBox: [0, -960, 960, 960]
+  }
+  
+  private static _fastRewindIcon: IconProps = {
+    path: "M823.613-267.694 515.308-480l308.305-212.306v424.612Zm-378.921 0L136.387-480l308.305-212.306v424.612Z",
+    viewBox: [0, -960, 960, 960]
+  }
+  
   private static generateElementFromString(componentString: string): Element {
     const tempContainer = document.createElement("div")
     tempContainer.innerHTML = componentString 
@@ -41,10 +66,55 @@ export default class Icons {
   }
 
   static settingsIcon(size?: number, fill?: string) {
-    const settingsIconProps: IconProps = this._settingsIcon
+    const settingsIconProps = this._settingsIcon
 
     return this.createIconComponent(
       settingsIconProps,
+      size ?? this._defaultIconSize,
+      fill
+    )
+  }
+  static playIcon(size?: number, fill?: string) {
+    const playIconProps = this._playIcon
+
+    return this.createIconComponent(
+      playIconProps,
+      size ?? this._defaultIconSize,
+      fill
+    )
+  }
+  static pauseIcon(size?: number, fill?: string) {
+    const pauseIconProps = this._pauseIcon
+
+    return this.createIconComponent(
+      pauseIconProps,
+      size ?? this._defaultIconSize,
+      fill
+    )
+  }
+  static resetIcon(size?: number, fill?: string) {
+    const resetIconProps = this._resetIcon
+
+    return this.createIconComponent(
+      resetIconProps,
+      size ?? this._defaultIconSize,
+      fill
+    )
+  }
+  static fastForwardIcon(size?: number, fill?: string) {
+    const fastForwardIconProps = this._fastForwardIcon
+
+    return this.createIconComponent(
+      fastForwardIconProps,
+      size ?? this._defaultIconSize,
+      fill
+    )
+  }
+  static fastRewindIcon(size?: number, fill?: string) {
+    const fastRewindIconProps = this._fastRewindIcon
+
+    return this.createIconComponent(
+      fastRewindIconProps,
       size ?? this._defaultIconSize,
       fill
     )

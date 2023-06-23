@@ -17,7 +17,8 @@ export type Fita = {
   cabecote: number
 }
 export interface IControladorMaquina {
-  iniciarMaquinaTuring: (w: string) => void
+  inicializarMaquinaTuring: (w: string) => void
+  reinicializarMaquinaTuring: () => void
   aplicarTransicao: (t: Transicao) => void
   finalizarComputacao: (p: Parada) => void
   alterarTick: (t: Tick) => void
@@ -42,6 +43,7 @@ export default class MaquinaTuring {
   private _q_aceita: Estado
   private _q_rejeita: Estado
 
+  private _palavraEntrada: string = ""
   private _tick: Tick
   private _status: StatusMaquina
   private _fita: Fita
@@ -84,10 +86,11 @@ export default class MaquinaTuring {
     this._q_aceita = q_aceita
     this._q_rejeita = q_rejeita
 
-    this._Γ = [...new Set(this._δ.flatMap(([i1, s1, i2, s2]) => [s1, s2]))]
-      .concat(' ')
-      .sort()
-      .join('')
+    // this._Γ = [...new Set(this._δ.flatMap(([i1, s1, i2, s2]) => [s1, s2]))]
+    //   .concat(' ')
+    //   .sort()
+    //   .join('')
+    this._Γ = ''
     this._Σ = ''
 
     this._tick = 1
@@ -101,31 +104,39 @@ export default class MaquinaTuring {
     this.controlador = controlador
   }
 
-  resetar() {
-    this._Γ = [...new Set(this._δ.flatMap(([i1, s1, i2, s2]) => [s1, s2]))]
-      .concat(' ')
-      .sort()
-      .join('')
-    this._Σ = ''
-
-    this._tick = 1
-    this._fita = {
-      conteudo: '',
-      estadoAtual: this.q_0,
-      cabecote: 0
-    }
-    this._status = "Não iniciada"
-  }
-
   pausar() {
     this._status = "Pausada"
   }
 
-  iniciar(w: string, t?: Tick) {
+  reinicializar() {
+    this._fita.conteudo = this._palavraEntrada
+    this._fita.cabecote = 0
+    this._fita.estadoAtual = this._q_0
+
+    this._status = "Não iniciada"
+
+    this.controlador.reinicializarMaquinaTuring()
+  }
+
+  inicializar(w: string, t?: Tick) {
+    this._palavraEntrada = w
     this._fita.conteudo = w
-    this._Σ = [... new Set(this._fita.conteudo)].sort().join('')
-    this._Γ = [...new Set(this._Γ.concat(this._Σ))].sort().join('')
-    this.controlador.iniciarMaquinaTuring(w)
+    this._fita.cabecote = 0
+    this._fita.estadoAtual = this._q_0
+
+    // O alfabeto de entrada é o conjunto de símbolos que aparecem na entrada
+    this._Σ = [... new Set(this._palavraEntrada)].sort().join('')
+
+    // O alfabeto da fita é reinicializado, sendo a concatenação do albabeto de entrada com símbolos que aparecem nas regras de transição e o símbolo em branco
+    this._Γ = [...new Set(
+      this._Σ.split('')
+        .concat(this._δ.flatMap(([e1, s1, e2, s2]) => [s1, s2]))
+        .concat(' ')
+    )].sort().join('')
+
+    this._status = "Não iniciada"
+    
+    this.controlador.inicializarMaquinaTuring(w)
 
     if (t) this._tick = t
   }
@@ -227,6 +238,14 @@ export default class MaquinaTuring {
 
   get q_rejeita(): Estado {
     return this._q_rejeita;
+  }
+
+  get palavraEntrada(): string {
+    return this._palavraEntrada
+  }
+
+  get tick(): Tick {
+    return this._tick
   }
 
 }

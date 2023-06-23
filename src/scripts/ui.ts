@@ -6,6 +6,7 @@ export default class ControladorUIFita {
   private _tick: Tick = 1
   private _celulaAtual: HTMLLIElement
   private _conteudo: string = ''
+  private _palavraEntrada: string = ''
   private _posAtual: number = 0
   private _posAnterior: number = 0
   private _qtdTransicoesParaAtualizacao: number = 0
@@ -49,8 +50,12 @@ export default class ControladorUIFita {
     const previousTransitionDuration = this._fita.style.transitionDuration
     this._fita.style.transitionDuration = '0s'
     this._posPx += qtd * 60
+
+    console.log("CORREÇÃO DA FITA!!!")
+    console.log(`posPx: ${this._posPx}`)
+
     setTimeout(() => {
-      this._fita.style.transform = `translateX(${this._posPx + qtd * 60}px)`
+      this._fita.style.transform = `translateX(${this._posPx}px)`
       this._fita.style.transitionDuration = previousTransitionDuration
     }, 1)
   } 
@@ -117,8 +122,17 @@ export default class ControladorUIFita {
 
   get p() { return this._posPx }
 
-  iniciarMaquinaTuring(w: string): void {
-    this._conteudo = w
+  inicializarMaquinaTuring(w: string): void {
+    this._palavraEntrada = w
+    this._conteudo = this._palavraEntrada
+    this._celulaAtual = this.preencherCelulas()
+  }
+
+  reinicializarMaquinaTuring(): void {
+    this._posAtual = 0
+    this._posAnterior = 0
+    this._conteudo = this._palavraEntrada
+    this._posPx = 0
     this._celulaAtual = this.preencherCelulas()
   }
 
