@@ -140,17 +140,8 @@ rewindButton.addEventListener("click", () => {
   switch (mt.tick) {
     case 1:
       return
-    case 1.25:
-      novoTick = 1
-      break
-    case 1.5:
-      novoTick = 1.25
-      break
-    case 1.75:
-      novoTick = 1.5
-      break
     case 2:
-      novoTick = 1.75
+      novoTick = 1
       break
     case 4:
       novoTick = 2
@@ -179,15 +170,6 @@ forwardButton.addEventListener("click", () => {
 
   switch (mt.tick) {
     case 1:
-      novoTick = 1.25
-      break
-    case 1.25:
-      novoTick = 1.5
-      break
-    case 1.5:
-      novoTick = 1.75
-      break
-    case 1.75:
       novoTick = 2
       break
     case 2:

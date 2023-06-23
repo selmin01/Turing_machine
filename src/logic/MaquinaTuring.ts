@@ -3,7 +3,7 @@ export type Movimento = "Esquerda" | "Direita"
 export type Alfabeto = string
 export type Simbolo = string
 export type Transicao = [Estado, Simbolo, Estado, Simbolo, Movimento]
-export type Tick = 1 | 1.25 | 1.5 | 1.75 | 2 | 4 | 8 | 16 | 32
+export type Tick = 1 | 2 | 4 | 8 | 16 | 32
 export type Parada = "Aceitou"
   | "Rejeitou, estado de rejeição"
   | "Rejeitou por indefinição"
