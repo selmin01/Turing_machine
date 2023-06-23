@@ -2,7 +2,7 @@ import { IControladorMaquina, Parada, Tick, Transicao } from "../logic/MaquinaTu
 
 export default class ControladorUIFita {
   private _fita: HTMLUListElement
-  private _posPx: number
+  private _posPx: number = 0
   private _tick: Tick = 1
   private _celulaAtual: HTMLLIElement
   private _conteudo: string = ''
@@ -108,16 +108,9 @@ export default class ControladorUIFita {
     }, 10)
   }
 
-  private obterPosicaoAtual(): number {
-    const transformValue = getComputedStyle(this._fita).getPropertyValue("transform")
-    const currentPos = new DOMMatrixReadOnly(transformValue).m41
-    return currentPos
-  }
-
   constructor(fita: HTMLUListElement) {
     this._fita = fita
     this._fita.style.transitionDuration = `${(1000 / this._tick) * 0.75}ms`
-    this._posPx = this.obterPosicaoAtual()
     
     this._celulaAtual = this.preencherCelulas()
   } 

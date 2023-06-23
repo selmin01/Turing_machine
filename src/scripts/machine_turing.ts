@@ -79,9 +79,9 @@ function handleSubmit(event: SubmitEvent) {
     // Exibe os valores dos campos na div "right-panel"
     const rightPanelElement = document.querySelector("#quadro");
     if (rightPanelElement) {
-        rightPanelElement.innerHTML = `=> Estado: ${estado}<br>Tipo: ${tipo}`;
+        rightPanelElement.innerHTML += `=> Estado: ${estado}<br>Tipo: ${tipo}`;
         infoList.forEach(element => {
-            rightPanelElement.innerHTML = `[${element}]`;
+            rightPanelElement.innerHTML += `[${element}]`;
         });
     }
   
