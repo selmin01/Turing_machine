@@ -3,7 +3,7 @@ export type Movimento = "Esquerda" | "Direita"
 export type Alfabeto = string
 export type Simbolo = string
 export type Transicao = [Estado, Simbolo, Estado, Simbolo, Movimento]
-export type Tick = 1 | 1.25 | 1.5 | 1.75 | 2 | 4 | 8 | 16
+export type Tick = 1 | 1.25 | 1.5 | 1.75 | 2 | 4 | 8 | 16 | 32
 export type Parada = "Aceitou"
   | "Rejeitou, estado de rejeição"
   | "Rejeitou por indefinição"
@@ -141,11 +141,6 @@ export default class MaquinaTuring {
     const operacao = () => {
       const { conteudo, estadoAtual, cabecote } = this._fita
       const simboloAtual = conteudo[cabecote] ?? ' '
-
-      // console.log("Computando...")
-      // console.log("Estado atual: ")
-      // console.log(estadoAtual)
-      // console.log(`Posicao atual do cabecote: ${cabecote}`)
 
       if (this._status != "Computando")
         return

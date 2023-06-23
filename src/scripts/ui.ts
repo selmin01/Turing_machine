@@ -1,128 +1,177 @@
-import { Tick } from "../logic/MaquinaTuring"
+import { IControladorMaquina, Parada, Tick, Transicao } from "../logic/MaquinaTuring"
 
-function calcTransitionDuration(tick: Tick) {
-  return (1000 / tick) * 0.75
-}
+export default class ControladorUIFita {
+  private _fita: HTMLUListElement
+  private _posPx: number
+  private _tick: Tick = 1
+  private _celulaAtual: HTMLLIElement
+  private _conteudo: string = ''
+  private _posAtual: number = 0
+  private _posAnterior: number = 0
+  private _qtdTransicoesParaAtualizacao: number = 0
+  private _qtdElementsEachSide = 64
 
-function obterPosicaoAtual(element: HTMLElement) {
-  const transformValue = getComputedStyle(element).getPropertyValue("transform")
-  const currentPos = new DOMMatrixReadOnly(transformValue).m41
-  return currentPos
-}
-
-export function moverCabecoteDireita(fita: HTMLElement) {
-  setTimeout(() => {
-    fita.style.transform = `translateX(${obterPosicaoAtual(fita) - 60}px)`
-  }, 10)
-}
-
-export function moverCabecoteEsquerda(fita: HTMLUListElement) {
-  setTimeout(() => {
-    fita.style.transform = `translateX(${obterPosicaoAtual(fita) + 60}px)`
-  }, 10)
-}
-
-export function falsoMovimentoAEsquerda(fita: HTMLUListElement, tick: Tick) {
-  setTimeout(() => {
-    const posicaoAtual = obterPosicaoAtual(fita)
-    fita.style.transform = `translateX(${posicaoAtual + 32}px)`
+  private direita() {
+    this._posPx -= 60
     setTimeout(() => {
-      fita.style.transform = `translateX(${posicaoAtual}px)`
-    }, (1000 / tick) * 0.2)
-  }, 10)
-}
-
-export function animarTransicaoCelula(celula: HTMLLIElement, tick: number) {
-  setTimeout(() => {
-    celula.style.transitionDuration = '0ms'
-    celula.style.color = "#3498db"
-    setTimeout(() => {
-      celula.style.transitionDuration = `${(1000 / tick) * 0.2}ms`
-      celula.style.color = "#111414"
-    }, (1000 / tick) * 0.2)
-  }, 10)
-}
-
-function corrigirTransition(fita: HTMLUListElement, qtd: number) {
-  const previousTransitionDuration = fita.style.transitionDuration
-  fita.style.transitionDuration = '0s'
-  const posicaoAtual = obterPosicaoAtual(fita)
-  fita.style.transform = `translateX(${posicaoAtual + qtd * 60}px)`
-  setTimeout(() => {
-    fita.style.transitionDuration = previousTransitionDuration
-  }, 1)
-} 
-
-export function preencherCelulasMT(
-  ulFita: HTMLUListElement,
-  conteudo: string,
-  [posAtual, posAnterior]: [number, number],
-): HTMLLIElement {
-  const qtdElementsEachSide = 64
-  ulFita.innerHTML = ''
-  let left24Elements: HTMLLIElement[] = []
-  let i = 0, c = posAtual - 1
-  while (i < qtdElementsEachSide) {
-    if (c < 0) break
-
-    const novaCelula = document.createElement("li")
-    novaCelula.classList.add("celula")
-    if (c == 0) novaCelula.id = "primeira-celula"
-    novaCelula.innerText = conteudo[c] || ' '
-
-    left24Elements.push(novaCelula)
-
-    c--
-    i++
+      this._fita.style.transform = `translateX(${this._posPx}px)`
+    }, 10)
   }
 
-  const dist = Math.abs(posAtual - posAnterior)
-  const maxPos = Math.max(posAnterior, posAtual)
-  const minPos = Math.min(posAnterior, posAtual)
-  let qtdCorrecaoTransition = dist
-    - (
-      Math.min(maxPos, qtdElementsEachSide)
-    - Math.min(minPos, qtdElementsEachSide)
-    )
-  if (posAtual < posAnterior) qtdCorrecaoTransition *= -1
-  corrigirTransition(ulFita, qtdCorrecaoTransition)
-  console.log("posAtual: " + posAtual + ", posAnterior: " + posAnterior)
-  console.log("Deslocamento calculado: " + qtdCorrecaoTransition)
-  // c++
-
-  // if (posAtual > qtdElementsEachSide) {
-  //   corrigirTransition(ulFita, )
-  // }
-
-  // if (c > 0) {
-  //   const qtd = c <= qtdElementsEachSide - 1 ? c : qtdElementsEachSide - 1
-  //   console.log("Transition corrigida! Numero de celulas deslocadas: " + qtd)
-  //   corrigirTransition(ulFita, qtd)
-  // }
-
-  left24Elements.reverse()
-
-  const celulaAtual: HTMLLIElement = document.createElement("li")
-  celulaAtual.classList.add("celula")
-  celulaAtual.innerText = conteudo[posAtual] || ' ' 
-
-  left24Elements.push(celulaAtual)
-
-  let right24Elements: HTMLLIElement[] = []
-  i = 0, c = posAtual + 1
-  while (i < qtdElementsEachSide) {
-    const novaCelula = document.createElement("li")
-    novaCelula.classList.add("celula")
-    novaCelula.innerText = conteudo[c] || ' '
-
-    right24Elements.push(novaCelula)
-
-    c++;
-    i++;
+  private esquerda() {
+    this._posPx += 60
+    setTimeout(() => {
+      this._fita.style.transform = `translateX(${this._posPx}px)`
+    }, 10)
   }
 
-  const totalElements = left24Elements.concat(right24Elements)
-  totalElements.forEach(elem => ulFita.appendChild(elem))
+  private falsoMovEsquerda() {
+    this._fita.style.transform = `translateX(${this._posPx + 32}px)`
+    setTimeout(() => {
+      this._fita.style.transform = `translateX(${this._posPx}px)`
+    }, (1000 / this._tick) * 0.2)
+  }
 
-  return celulaAtual
+  private corrigirTranslate() {
+    // Calcular quantidade de células deslocadas
+    const dist = Math.abs(this._posAtual - this._posAnterior)
+    const maxPos = Math.max(this._posAnterior, this._posAtual)
+    const minPos = Math.min(this._posAnterior, this._posAtual)
+    let qtd = dist
+      - (
+        Math.min(maxPos, this._qtdElementsEachSide)
+      - Math.min(minPos, this._qtdElementsEachSide)
+      )
+    if (this._posAtual < this._posAnterior)
+      qtd *= -1
+
+    // Aplicar correção
+    const previousTransitionDuration = this._fita.style.transitionDuration
+    this._fita.style.transitionDuration = '0s'
+    this._posPx += qtd * 60
+    setTimeout(() => {
+      this._fita.style.transform = `translateX(${this._posPx + qtd * 60}px)`
+      this._fita.style.transitionDuration = previousTransitionDuration
+    }, 1)
+  } 
+
+  private preencherCelulas(): HTMLLIElement {
+    this._fita.innerHTML = ''
+    let leftElements: HTMLLIElement[] = []
+    let i = 0, c = this._posAtual - 1
+    while (i < this._qtdElementsEachSide) {
+      if (c < 0) break
+      const novaCelula = document.createElement("li")
+      novaCelula.classList.add("celula")
+      if (c == 0) novaCelula.id = "primeira-celula"
+      novaCelula.innerText = this._conteudo[c] || ' '
+      leftElements.push(novaCelula)
+      c--
+      i++
+    }
+
+    this.corrigirTranslate()
+  
+    leftElements.reverse()
+  
+    const celulaAtual: HTMLLIElement = document.createElement("li")
+    celulaAtual.classList.add("celula")
+    celulaAtual.innerText = this._conteudo[this._posAtual] || ' ' 
+  
+    leftElements.push(celulaAtual)
+  
+    let rightElements: HTMLLIElement[] = []
+    i = 0, c = this._posAtual + 1
+    while (i < this._qtdElementsEachSide) {
+      const novaCelula = document.createElement("li")
+      novaCelula.classList.add("celula")
+      novaCelula.innerText = this._conteudo[c] || ' '
+      rightElements.push(novaCelula)
+      c++;
+      i++;
+    }
+  
+    const totalElements = leftElements.concat(rightElements)
+    totalElements.forEach(elem => this._fita.appendChild(elem))
+  
+    return celulaAtual
+  }
+
+  private animarTransicaoCelula(celula: HTMLLIElement) {
+    setTimeout(() => {
+      celula.style.transitionDuration = '0ms'
+      celula.style.color = "#3498db"
+      setTimeout(() => {
+        celula.style.transitionDuration = `${(1000 / this._tick) * 0.2}ms`
+        celula.style.color = "#111414"
+      }, (1000 / this._tick) * 0.2)
+    }, 10)
+  }
+
+  private obterPosicaoAtual(): number {
+    const transformValue = getComputedStyle(this._fita).getPropertyValue("transform")
+    const currentPos = new DOMMatrixReadOnly(transformValue).m41
+    return currentPos
+  }
+
+  constructor(fita: HTMLUListElement) {
+    this._fita = fita
+    this._fita.style.transitionDuration = `${(1000 / this._tick) * 0.75}ms`
+    this._posPx = this.obterPosicaoAtual()
+    
+    this._celulaAtual = this.preencherCelulas()
+  } 
+
+  get p() { return this._posPx }
+
+  iniciarMaquinaTuring(w: string): void {
+    this._conteudo = w
+    this._celulaAtual = this.preencherCelulas()
+  }
+
+  aplicarTransicao(t: Transicao): void {
+    const [,,, simbEscrita, mov] = t
+
+    this._conteudo = this._conteudo.slice(0, this._posAtual)
+      + simbEscrita
+      + this._conteudo.slice(this._posAtual + 1)
+    
+      this._celulaAtual.innerText = simbEscrita
+
+    if (mov === "Direita") {
+      this.direita()
+      this.animarTransicaoCelula(this._celulaAtual)
+      this._celulaAtual = this._celulaAtual.nextElementSibling as HTMLLIElement
+      this._posAtual++
+    } else {
+      const celulaAnterior = this._celulaAtual.previousElementSibling as HTMLLIElement
+      if (celulaAnterior) {
+        this.esquerda()
+        this.animarTransicaoCelula(this._celulaAtual)
+        this._celulaAtual = celulaAnterior
+        this._posAtual--
+      } else {
+        this.falsoMovEsquerda()
+        this.animarTransicaoCelula(this._celulaAtual)
+      }
+    }
+
+    this._qtdTransicoesParaAtualizacao++
+    if (this._qtdTransicoesParaAtualizacao > 32) {
+      this._celulaAtual = this.preencherCelulas()
+      this._posAnterior = this._posAtual
+      this._qtdTransicoesParaAtualizacao = 0
+    }
+  
+  }
+
+  finalizarComputacao(p: Parada) {
+    console.log("Parou!")
+  }
+
+  alterarTick(t: Tick) {
+    this._tick = t
+    const tickTime = (1000 / t) * 0.75
+    this._fita.style.transitionDuration = `${tickTime}ms`
+  }
 }
