@@ -15,6 +15,14 @@
   background-color: #eaeaea; /* Cor de fundo do painel direito */
 }
 
+.nomeDaMaquina {
+  -webkit-text-stroke-width: 1.5px; /* largura da borda */
+  -webkit-text-stroke-color: blueviolet; /* cor da borda */
+  font-family: 'Pacifico', cursive;
+  font-size: 24px; 
+  color: #333; 
+}
+
 .centralized{
   margin: 30px;
   display: flex;
@@ -27,6 +35,8 @@
   padding: 10px;
   font-family: 'Courier New', monospace;
   color: #0f0;
+  max-height: 350px; /* Altura máxima do elemento */
+  overflow-y: auto;
 }
 
 .container-start {
@@ -52,6 +62,18 @@
   background-color: #0f0;
 }
 
+// .mTuring{
+//   margin: 20px; /* Define uma margem de 20 pixels em todas as direções */
+//   border: 10px solid #000; /* Define a cor do texto como branco */
+// }
+.corner-div {
+  position: absolute; /* Define a posição absoluta */
+  top: 10; /* Alinha a div no topo */
+  left: 5%; /* Alinha a div na esquerda */
+  width: 56px;
+  height: 56px;
+  background-color: red;
+}
 
 //////////////////////////////  /* Computação da máquina */ //////////////////////////////
 * {

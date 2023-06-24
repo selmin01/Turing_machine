@@ -1,6 +1,7 @@
 
 console.log("Hello from machine_turing")
 
+const arrayItem: {}[] = [];
 const infoList: string[] = [];
 
 const form = document.querySelector('#cadastroEstado') as HTMLFormElement;
@@ -20,27 +21,39 @@ function handleSubmit(event: SubmitEvent) {
     const escrita = formData.get('escrita');
     const movimento = formData.get('movimento');
 
+    // Adicionando objetos ao array
+    arrayItem.push({ 'Estado': estado, 'Tipo': tipo, 'Leitura': leitura, 'Escrita': escrita, 'Movimento': movimento });
+    console.log(arrayItem);
+
     // Cria um novo item de lista com as informações do formulário
     const listItem = document.createElement("li");
     listItem.textContent = `    Estado: ${estado}, <br>
                                 Tipo: ${tipo}, <br>
                                 Lê: ${leitura}, <br>
                                 Escreve: ${escrita}, <br>
-                                Vai: ${movimento}, <br>`;
+                                Vai: ${movimento} <br>===============<br>`;
 
     if(infoList){
         infoList.push(listItem.textContent);
-        console.log(infoList);
     }
 
     // Exibe os valores dos campos na div "right-panel"
     const rightPanelElement = document.querySelector("#quadro");
     if (rightPanelElement) {
-        rightPanelElement.innerHTML = `=> Estado: ${estado}<br>Tipo: ${tipo}`;
-        rightPanelElement.innerHTML = `[${infoList}]`;
+        rightPanelElement.innerHTML = `${infoList}`;
         // infoList.forEach(element => {
         //     rightPanelElement.innerHTML = `[${element}]`;
         // });
     }
   
+}
+
+// const botao = document.querySelector('#removeEstado') as HTMLFormElement;
+// botao.addEventListener('submit',removeEstado)
+// const botao = document.getElementById('removeEstado');
+// botao.on
+// botao.addEventListener('click', removeEs);
+
+function removeEstado() {
+    infoList.pop;
 }
