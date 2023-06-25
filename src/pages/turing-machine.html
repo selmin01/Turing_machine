@@ -7,65 +7,45 @@
 </head>
 <body>
   <div class="viewport">
-    <h3 class="text-center">Bem-vindo a MT 
-      <marquee direction="right">
-        <p class="nomeDaMaquina">Smooth</p> 
-      </marquee>
-    </h3>
-  <div class="corner-div">
-    <a id="settings" href="/">
-      <!-- Ícone com id "settings" aqui - será inserido usando JavaScript -->
-    </a>
-  </div>
-  <div id="palavra-entrada">
-    <h5 class="mb-3 text-center">Palavra de entrada</h5>
-    <div class="d-flex align-items-center gap-2">
-      <input 
-        id="inputPalavra"
-        type="text" 
-        placeholder="Insira sua palavra de entrada aqui" 
-        class="form-control" 
-      />
-      <button id="inserirPalavra" class="btn btn-primary">Inserir</button>
-    </div>
-  </div>
 
-  <div id="maquina-turing">
-    <div id="fita-container">
-      <ul id="fita"> <!-- Fita -->
-        <li id="primeira-celula" class="celula">
-          0
-        </li>
-        <li class="celula">
-          1
-        </li>
-        <li class="celula">
-          0
-        </li>
-        <li class="celula">
-          1
-        </li>
-      </ul>
+  <a id="settings" href="/">
+    <!-- Ícone com id "settings" aqui - será inserido usando JavaScript -->
+  </a>
+
+    <div id="palavra-entrada" class="grid-viewport">
+      <div class="grid">
+        
+        <div class="grid-item isolated">
+          <h5 class="mb-3 text-center">Palavra de entrada</h5>
+        </div>
+        
+        <div class="grid-item center-0">
+          <div class="d-flex align-items-center gap-2">
+            <input 
+            id="inputPalavra"
+            type="text" 
+            placeholder="Insira sua palavra de entrada aqui" 
+            class="form-control" 
+            />
+            <button id="inserirPalavra" class="btn btn-primary">Inserir</button>
+          </div>
+        </div>
+        
+      </div>
     </div>
 
-    <div id="control-bar">
+  <div id="maquina-turing" class="grid-viewport">
+    <div class="grid">
+
+    <div id="control-bar" class="grid-item center-4">
   
-      <div id="play-pause-reset">
         <button id="play-pause">
           <!-- Ícone play-pause - A ser inserido dinamicamente -->
         </button>
         <button id="reset">
           <!-- Ícone reset - A ser inserido dinamicamente -->
         </button>
-      </div>
   
-      <div id="seta-cabecote">
-        <svg style="transform: rotate(-90deg)" xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48">
-          <path fill="#111414" d="m304-82-56-57 343-343-343-343 56-57 400 400L304-82Z"/>
-        </svg><!-- Seta do cabeçote -->
-      </div>
-  
-      <div id="control-speed">
         <button id="rewind">
           <!-- Ícone de desaceleração - A ser inserido dinamicamente -->
         </button>
@@ -77,85 +57,120 @@
         <button id="forward">
           <!-- Ícone de aceleração - A ser inserido dinamicamente -->
         </button>
-      </div>
-  
+
     </div><!-- control-bar -->
+
+    <div id="fadeout" class="grid-item isolated">
+      <div id="fita-container">
+        <ul id="fita"> <!-- Fita -->
+          <li id="primeira-celula" class="celula">
+            0
+          </li>
+          <li class="celula">
+            1
+          </li>
+          <li class="celula">
+            0
+          </li>
+          <li class="celula">
+            1
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="seta-cabecote" class="grid-item isolated">
+      <div class="d-flex justify-content-center">
+        <svg style="transform: rotate(-90deg)" xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48">
+          <path fill="#111414" d="m304-82-56-57 343-343-343-343 56-57 400 400L304-82Z"/>
+        </svg><!-- Seta do cabeçote -->
+      </div>
+    </div>
+
+    </div><!-- grid -->
   </div><!-- maquina-turing -->
 
-  <div id="dados-correntes-mt">
-    <div id="estado-atual" class="card">
+
+    
+
+  
+  <div id="dados-mt" class="grid-viewport">
+    <div class="grid xs-r7 sm-r5 md-r4">
+
+    <div id="transicoes" class="card grid-item sm-fr xs-s4">
+
       <div class="card-body">
-        <h5 class="card-title py-0 my-0 text-center">Estado atual:</h5>
+        <h6 class="card-title py-0 my-0 text-center">δ - Transições</h6>
+        <ul id="transicoes-content" class="mt-2 d-block text-center fw-bold">
+          
+        </ul>
+      </div>
+
+    </div>
+    
+    <div id="estado-atual" class="card grid-item xs-s2">
+      <div class="card-body">
+        <h6 class="card-title py-0 my-0 text-center">Estado atual:</h6>
         <span class="mt-2 d-block text-center fw-bold cor-cinza" id="estado-atual-content">
           N/A
         </span>
       </div>
     </div>
-    <div id="transicao-atual" class="card">
+
+    <div id="transicao-atual" class="card grid-item xs-s2">
       <div class="card-body">
-        <h5 class="card-title py-0 my-0 text-center">Transição atual:</h5>
+        <h6 class="card-title py-0 my-0 text-center">Transição atual:</h6>
         <span class="mt-2 d-block text-center fw-bold cor-cinza" id="transicao-atual-content">
           N/A
         </span>
       </div>
     </div>
-    <div id="situacao-atual" class="card">
+
+    <div id="situacao-atual" class="card grid-item xs-s4">
       <div class="card-body">
-        <h5 class="card-title py-0 my-0 text-center">Situação atual:</h5>
+        <h6 class="card-title py-0 my-0 text-center">Situação atual:</h6>
         <span class="mt-2 d-block text-center fw-bold cor-cinza" id="situacao-atual-content">
           N/A
         </span>
       </div>
     </div>
-  </div>
-  <br>
-  
-  <div id="dados-mt">
-    <h3 class="mb-4 text-center">Dados da MT: (Q, Σ, Γ, δ, q0, qA, qR)</h3>
-    <div id="dados">
-      <div id="alfabeto-entrada">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title py-0 my-0 text-center">Σ - Alfabeto de entrada</h5>
-            <span id="alfabeto-entrada-content" class="mt-2 d-block text-center fw-bold" >
-              
-            </span>
-          </div>
-        </div>
-      </div>
-      <div id="alfabeto-fita">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title py-0 my-0 text-center">Γ - Alfabeto da fita</h5>
-            <span id="alfabeto-fita-content" class="mt-2 d-block text-center fw-bold">
-              
-            </span>
-          </div>
-        </div>
-      </div>
-      <div id="conjunto-estados">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title py-0 my-0 text-center">Q - Conjunto de estados</h5>
-            <span id="conjunto-estados-content" class="mt-2 d-block text-center fw-bold">
-              
-            </span>
-          </div>
-        </div>
-      </div>
-      <div id="transicoes">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title py-0 my-0 text-center">δ - Transições</h5>
-            <ul id="transicoes-content" class="mt-2 d-block text-center fw-bold">
-              
-            </ul>
-          </div>
+    
+    <div id="alfabeto-entrada" class="grid-item xs-s4 md-s8">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title py-0 my-0 text-center">Σ - Alfabeto de entrada</h6>
+          <span id="alfabeto-entrada-content" class="mt-2 d-block text-center fw-bold" >
+
+          </span>
         </div>
       </div>
     </div>
-  </div>
-  <br>
+
+    <div id="alfabeto-fita" class="grid-item xs-s4 md-s8">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title py-0 my-0 text-center">Γ - Alfabeto da fita</h6>
+          <span id="alfabeto-fita-content" class="mt-2 d-block text-center fw-bold">
+            
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div id="conjunto-estados" class="grid-item xs-s4 md-s8">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title py-0 my-0 text-center">Q - Conjunto de estados</h6>
+          <span id="conjunto-estados-content" class="mt-2 d-block text-center fw-bold">
+            
+          </span>
+        </div>
+      </div>
+    </div>
+
+    </div><!-- grid -->
+  </div><!-- dados-mt -->
+
   </div><!-- viewport -->
 </body>
 </html>
