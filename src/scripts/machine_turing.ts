@@ -18,11 +18,12 @@ function handleSubmit(event: SubmitEvent) {
     const estado = formData.get('estado');
     const tipo = formData.get('tipo');
     const leitura = formData.get('leitura');
+    const estadoDestino = formData.get('estadoDestino');
     const escrita = formData.get('escrita');
     const movimento = formData.get('movimento');
 
     // Adicionando objetos ao array
-    arrayItem.push({ 'Estado': estado, 'Tipo': tipo, 'Leitura': leitura, 'Escrita': escrita, 'Movimento': movimento });
+    arrayItem.push({ 'Estado': estado, 'Tipo': tipo, 'Leitura': leitura, 'EstadoDestino': estadoDestino, 'Escrita': escrita, 'Movimento': movimento });
     console.log(arrayItem);
 
     // Cria um novo item de lista com as informações do formulário
@@ -30,8 +31,9 @@ function handleSubmit(event: SubmitEvent) {
     listItem.textContent = `    Estado: ${estado}, <br>
                                 Tipo: ${tipo}, <br>
                                 Lê: ${leitura}, <br>
+                                Vai: ${estadoDestino}, <br>
                                 Escreve: ${escrita}, <br>
-                                Vai: ${movimento} <br>===============<br>`;
+                                Movimenta: ${movimento} <br>===============<br>`;
 
     if(infoList){
         infoList.push(listItem.textContent);
