@@ -1,6 +1,6 @@
 import MaquinaTuring, { Estado, Fita, IControladorMaquina, IDadosMaquinaTuring, IEntradaMT, Parada, Tick, Transicao } from "../logic/MaquinaTuring"
 import Icons from "./icons"
-import ControladorUIFita from "./ui"
+import ControladorUIFita, { IElementos } from "./ui"
 
 console.log("Hello from script.ts")
 
@@ -41,7 +41,7 @@ export default function submitDadosMT(dados: IEntradaMT): MaquinaTuring {
     document.querySelector("#transicoes-content")
   if (!ulTransicoes) throw new Error("UL do conjunto de transicoes não identificado.")
 
-  const controladorMT: IControladorMaquina = new ControladorUIFita({
+  const elementos: IElementos = {
     fita,
     spanEstadoAtual,
     spanSituacaoAtual,
@@ -50,7 +50,9 @@ export default function submitDadosMT(dados: IEntradaMT): MaquinaTuring {
     spanAlfabetoFita,
     spanConjEstados,
     ulTransicoes
-  })
+  }
+
+  const controladorMT: IControladorMaquina = new ControladorUIFita(elementos)
 
   return new MaquinaTuring(dados, controladorMT)
 }
@@ -59,7 +61,7 @@ const mockDadosMaquina: IEntradaMT = {
   δ: [
     ["q0", "0", "q0", "1", "Direita"], // Stay in q0 and write 1, move right
     ["q0", "1", "q0", "0", "Direita"], // Stay in q0 and write 0, move right
-    ["q0", " ", "q0", "1", "Esquerda"], // Move to q1 and write 1, move left
+    ["q0", " ", "q_rejeita", "1", "Esquerda"], // Move to q1 and write 1, move left
     ["q1", "0", "q2", "1", "Esquerda"], // Move to q2 and write 1, move left
     ["q1", "1", "q1", "0", "Esquerda"], // Stay in q1 and write 0, move left
     ["q2", "0", "q2", "0", "Esquerda"], // Stay in q2 and write 0, move left
@@ -75,8 +77,6 @@ const mockDadosMaquina: IEntradaMT = {
 };
 
 let mt = submitDadosMT(mockDadosMaquina)
-
-
 
 // Ícone de play/pause
 let playing: boolean = false

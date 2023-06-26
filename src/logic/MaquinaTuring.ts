@@ -30,10 +30,10 @@ export interface IDadosMaquinaTuring {
   q0: Estado
   qA: Estado
   qR: Estado
-  w: string
 }
 export interface IControladorMaquina {
-  inicializarMaquinaTuring: (dados: IDadosMaquinaTuring) => void
+  construirMaquinaTuring: (dados: IDadosMaquinaTuring) => void
+  inicializarMaquinaTuring: (Σ: Alfabeto, Γ: Alfabeto, w: string) => void
   reinicializarMaquinaTuring: () => void
   iniciarComputacao: () => void
   pausarComputacao: () => void
@@ -68,12 +68,11 @@ export default class MaquinaTuring {
       q0: this._q0,
       qA: this._qA,
       qR: this._qR,
-      w: this._palavraEntrada
     }
   }
 
-  constructor(dados: IEntradaMT, controlador: IControladorMaquina) {
-    const { δ, q0, qA, qR } = dados
+  constructor(dadosEntrada: IEntradaMT, controlador: IControladorMaquina) {
+    const { δ, q0, qA, qR } = dadosEntrada
 
     const Q: Estado[] = [
       ...new Set(
@@ -116,10 +115,6 @@ export default class MaquinaTuring {
     this._qA = qA
     this._qR = qR
 
-    // this._Γ = [...new Set(this._δ.flatMap(([i1, s1, i2, s2]) => [s1, s2]))]
-    //   .concat(' ')
-    //   .sort()
-    //   .join('')
     this._Γ = ''
     this._Σ = ''
 
@@ -132,6 +127,16 @@ export default class MaquinaTuring {
     }
 
     this.controlador = controlador
+
+    this.controlador.construirMaquinaTuring({
+      Q: this._Q,
+      Σ: this._Σ,
+      Γ: this._Γ,
+      δ: this._δ,
+      q0: this._q0,
+      qA: this._qA,
+      qR: this._qR
+    })
   }
 
   pausar() {
@@ -167,7 +172,7 @@ export default class MaquinaTuring {
 
     this._status = "Não iniciada"
     
-    this.controlador.inicializarMaquinaTuring(this.getDados())
+    this.controlador.inicializarMaquinaTuring(this._Σ, this._Γ, this._palavraEntrada)
 
     if (t) this._tick = t
   }

@@ -1,4 +1,4 @@
-import { Estado, IControladorMaquina, IDadosMaquinaTuring, Parada, Tick, Transicao } from "../logic/MaquinaTuring"
+import { Alfabeto, Estado, IControladorMaquina, IDadosMaquinaTuring, Parada, Tick, Transicao } from "../logic/MaquinaTuring"
 
 type Cor = "preto"
   | "cinza"
@@ -7,7 +7,7 @@ type Cor = "preto"
   | "verde"
   | "amarelo"
 
-interface IElementos {
+export interface IElementos {
   fita: HTMLUListElement
   spanEstadoAtual: HTMLSpanElement
   spanTransicaoAtual: HTMLSpanElement
@@ -19,6 +19,8 @@ interface IElementos {
 }
 
 export default class ControladorUIFita implements IControladorMaquina {
+  private _dadosMT?: IDadosMaquinaTuring
+
   private _fita: HTMLUListElement
   private _spanEstadoAtual: HTMLSpanElement
   private _spanTransicaoAtual: HTMLSpanElement
@@ -163,18 +165,13 @@ export default class ControladorUIFita implements IControladorMaquina {
 
   get p() { return this._posPx }
 
-  inicializarMaquinaTuring(dados: IDadosMaquinaTuring): void {
-    const { Q, Σ, Γ, δ, q0, qA, qR, w } = dados
-
-    this._palavraEntrada = w
-    this._estadoInicial = q0
-
-    this._spanAlfabetoEntrada.innerText = `{'${Σ.split('').join("', '")}'}`
-    this._spanAlfabetoFita.innerText = `{'${Γ.split('').join("', '")}'}`
+  construirMaquinaTuring(dadosMT: IDadosMaquinaTuring) {
+    const { Q, Σ, Γ, δ, q0, qA, qR } = dadosMT
+    // Os alfabetos Σ e Γ serão inferidos no momento da inicialização 
+  
     this._spanConjEstados.innerText = `{'${Q.join("', '")}'}`
 
-    this.reinicializarMaquinaTuring()
-
+    
     this._ulTransicoes.innerHTML = ""
     const liElements = δ.map(
       ([e1, s1, e2, s2, mov]) => {
@@ -182,8 +179,19 @@ export default class ControladorUIFita implements IControladorMaquina {
         li.innerText = `δ ('${e1}', '${s1}') = ('${e2}', '${s2}', '${mov}')`
         return li
       }
-    ).sort()
-    liElements.forEach(li => this._ulTransicoes.appendChild(li))
+      ).sort()
+      liElements.forEach(li => this._ulTransicoes.appendChild(li))
+      
+    this._estadoInicial = q0
+  } 
+
+  inicializarMaquinaTuring(Σ: Alfabeto, Γ: Alfabeto, w: string): void {
+    this._palavraEntrada = w
+
+    this._spanAlfabetoEntrada.innerText = `{'${Σ.split('').join("', '")}'}`
+    this._spanAlfabetoFita.innerText = `{'${Γ.split('').join("', '")}'}`
+
+    this.reinicializarMaquinaTuring()
   }
 
   reinicializarMaquinaTuring(): void {
