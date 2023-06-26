@@ -13,6 +13,18 @@ export default function submitDadosMT(dados: IEntradaMT): MaquinaTuring {
     document.querySelector("#fita")
   if (!fita) throw new Error("Fita não identificada.")
 
+  const spanEstadoInicial: HTMLSpanElement | null =
+    document.querySelector("#q0-content")
+  if (!spanEstadoInicial) throw new Error("Span de estado inicial não identificado.")
+
+  const spanEstadoRejeicao: HTMLSpanElement | null =
+    document.querySelector("#qR-content")
+  if (!spanEstadoRejeicao) throw new Error("Span de estado de rejeição não identificado.")
+
+  const spanEstadoAceitacao: HTMLSpanElement | null =
+    document.querySelector("#qA-content")
+  if (!spanEstadoAceitacao) throw new Error("Span de estado de aceitação não identificado.")
+
   const spanEstadoAtual: HTMLSpanElement | null =
     document.querySelector("#estado-atual-content")
   if (!spanEstadoAtual) throw new Error("Span de estado atual não identificado.")
@@ -43,6 +55,9 @@ export default function submitDadosMT(dados: IEntradaMT): MaquinaTuring {
 
   const elementos: IElementos = {
     fita,
+    spanEstadoInicial,
+    spanEstadoRejeicao,
+    spanEstadoAceitacao,
     spanEstadoAtual,
     spanSituacaoAtual,
     spanTransicaoAtual,

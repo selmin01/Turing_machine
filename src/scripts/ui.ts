@@ -9,6 +9,9 @@ type Cor = "preto"
 
 export interface IElementos {
   fita: HTMLUListElement
+  spanEstadoInicial: HTMLSpanElement
+  spanEstadoRejeicao: HTMLSpanElement
+  spanEstadoAceitacao: HTMLSpanElement
   spanEstadoAtual: HTMLSpanElement
   spanTransicaoAtual: HTMLSpanElement
   spanSituacaoAtual: HTMLSpanElement
@@ -22,6 +25,9 @@ export default class ControladorUIFita implements IControladorMaquina {
   private _dadosMT?: IDadosMaquinaTuring
 
   private _fita: HTMLUListElement
+  private _spanEstadoInicial: HTMLSpanElement
+  private _spanEstadoRejeicao: HTMLSpanElement
+  private _spanEstadoAceitacao: HTMLSpanElement
   private _spanEstadoAtual: HTMLSpanElement
   private _spanTransicaoAtual: HTMLSpanElement
   private _spanSituacaoAtual: HTMLSpanElement
@@ -150,6 +156,9 @@ export default class ControladorUIFita implements IControladorMaquina {
 
   constructor(elementos: IElementos) {
     this._fita = elementos.fita
+    this._spanEstadoInicial = elementos.spanEstadoInicial
+    this._spanEstadoRejeicao = elementos.spanEstadoRejeicao
+    this._spanEstadoAceitacao = elementos.spanEstadoAceitacao
     this._spanEstadoAtual = elementos.spanEstadoAtual
     this._spanSituacaoAtual = elementos.spanSituacaoAtual
     this._spanTransicaoAtual = elementos.spanTransicaoAtual
@@ -183,13 +192,20 @@ export default class ControladorUIFita implements IControladorMaquina {
       liElements.forEach(li => this._ulTransicoes.appendChild(li))
       
     this._estadoInicial = q0
+    this._spanEstadoInicial.innerText = q0
+
+    this._spanEstadoRejeicao.innerText = qR
+      
+    this._spanEstadoAceitacao.innerText = qA
   } 
 
   inicializarMaquinaTuring(Σ: Alfabeto, Γ: Alfabeto, w: string): void {
     this._palavraEntrada = w
 
     this._spanAlfabetoEntrada.innerText = `{'${Σ.split('').join("', '")}'}`
+    this.setCor(this._spanAlfabetoEntrada, "preto")
     this._spanAlfabetoFita.innerText = `{'${Γ.split('').join("', '")}'}`
+    this.setCor(this._spanAlfabetoFita, "preto")
 
     this.reinicializarMaquinaTuring()
   }

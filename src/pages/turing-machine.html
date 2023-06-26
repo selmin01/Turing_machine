@@ -95,52 +95,87 @@
 
   
   <div id="dados-mt" class="grid-viewport">
-    <div class="grid xs-r7 sm-r5 md-r4">
-
-    <div id="transicoes" class="card grid-item sm-fr xs-s4">
-
+    <div class="grid xs-r7 sm-r4">
+    
+    <!-- <div class="card grid-item xs-s2">
       <div class="card-body">
-        <h6 class="card-title py-0 my-0 text-center">δ - Transições</h6>
-        <ul id="transicoes-content" class="mt-2 d-block text-center fw-bold">
-          
-        </ul>
+        <h6>Estado inicial</h6>
       </div>
+    </div>
+    <div class="card grid-item xs-s2">
+      <div class="card-body">
+        <h6>Estado de aceitação</h6>
+      </div>
+    </div>
+    <div class="card grid-item xs-s2">
+      <div class="card-body">
+        <h6>Estado de rejeição</h6>
+      </div>
+    </div> -->
 
+    <div class="card grid-item xs-s2 border-primary">
+      <div class="card-body text-center">
+        <h6>
+          &#40;
+            <span class="text-primary">q0</span>, 
+            <span class="text-success">qA</span>, 
+            <span class="text-danger">qR</span>
+          &#41;
+        </h6>
+        <span id="estados-especiais-content" class="text-center">
+          &#40;
+          <span id="q0-content" class="text-primary">_</span>,
+          <span id="qA-content" class="text-success">_</span>,
+          <span id="qR-content" class="text-danger">_</span>
+          &#41;
+        </span>
+      </div>
     </div>
     
-    <div id="estado-atual" class="card grid-item xs-s2">
+    <div id="estado-atual" class="card grid-item xs-s2 border-primary">
       <div class="card-body">
-        <h6 class="card-title py-0 my-0 text-center">Estado atual:</h6>
+        <h6 class="text-center">Estado atual</h6>
         <span class="mt-2 d-block text-center fw-bold cor-cinza" id="estado-atual-content">
           N/A
         </span>
       </div>
     </div>
 
-    <div id="transicao-atual" class="card grid-item xs-s2">
+    <div id="transicao-atual" class="card grid-item xs-s4 sm-s2 md-s4 border-primary">
       <div class="card-body">
-        <h6 class="card-title py-0 my-0 text-center">Transição atual:</h6>
+        <h6 class="text-center">Transição atual</h6>
         <span class="mt-2 d-block text-center fw-bold cor-cinza" id="transicao-atual-content">
           N/A
         </span>
       </div>
     </div>
 
-    <div id="situacao-atual" class="card grid-item xs-s4">
+    <div id="situacao-atual" class="card grid-item xs-s4 sm-s2 md-s4 border-primary">
       <div class="card-body">
-        <h6 class="card-title py-0 my-0 text-center">Situação atual:</h6>
+        <h6 class="text-center">Situação atual</h6>
         <span class="mt-2 d-block text-center fw-bold cor-cinza" id="situacao-atual-content">
           N/A
         </span>
       </div>
     </div>
+
+    <div id="transicoes" class="card grid-item sm-r3 xs-s4">
+
+      <div class="card-body">
+        <h6>δ - Transições</h6>
+        <ul id="transicoes-content">
+          
+        </ul>
+      </div>
+
+    </div>
     
     <div id="alfabeto-entrada" class="grid-item xs-s4 md-s8">
       <div class="card">
         <div class="card-body">
-          <h6 class="card-title py-0 my-0 text-center">Σ - Alfabeto de entrada</h6>
-          <span id="alfabeto-entrada-content" class="mt-2 d-block text-center fw-bold" >
-
+          <h6>Σ - Alfabeto de entrada</h6>
+          <span id="alfabeto-entrada-content" class="cor-cinza">
+            Insira a palavra de entrada para determinar o alfabeto de entrada da Máquina de Turing!
           </span>
         </div>
       </div>
@@ -149,9 +184,9 @@
     <div id="alfabeto-fita" class="grid-item xs-s4 md-s8">
       <div class="card">
         <div class="card-body">
-          <h6 class="card-title py-0 my-0 text-center">Γ - Alfabeto da fita</h6>
-          <span id="alfabeto-fita-content" class="mt-2 d-block text-center fw-bold">
-            
+          <h6>Γ - Alfabeto da fita</h6>
+          <span id="alfabeto-fita-content" class="cor-cinza">
+            Insira a palavra de entrada para determinar o alfabeto da fita da Máquina de Turing!
           </span>
         </div>
       </div>
@@ -160,13 +195,17 @@
     <div id="conjunto-estados" class="grid-item xs-s4 md-s8">
       <div class="card">
         <div class="card-body">
-          <h6 class="card-title py-0 my-0 text-center">Q - Conjunto de estados</h6>
-          <span id="conjunto-estados-content" class="mt-2 d-block text-center fw-bold">
+          <h6>Q - Conjunto de estados</h6>
+          <span id="conjunto-estados-content">
             
           </span>
         </div>
       </div>
     </div>
+
+    <!-- <div id="estados-especiais" class="grid-item isolated xs-gap-4 sm-gap-8 md-gap-12 lg-gap-16">
+      
+    </div> -->
 
     </div><!-- grid -->
   </div><!-- dados-mt -->

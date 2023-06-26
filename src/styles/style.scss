@@ -100,6 +100,15 @@ $breakpoints: (
   xl: 1440px
 );
 
+@each $breakpoint, $width in $breakpoints {
+  @media (min-width: $width) {
+    @for $i from 1 through 10 {
+      $value: ($i) * 4;
+      .#{$breakpoint}-gap-#{$value} { gap: #{$value}px; } 
+    } 
+  }
+}
+
 .grid-viewport {
   width: 100%;
   position: relative;
@@ -118,9 +127,9 @@ $breakpoints: (
 
     @each $breakpoint, $width in $breakpoints {
       @for $i from 1 through 12 {
-        &.r#{$i} { grid-template-rows: repeat($i, minmax(auto, 120px)); }
+        &.r#{$i} { grid-template-rows: repeat($i, minmax(auto, 100px)); }
         &.#{$breakpoint}-r#{$i} {
-          @media (min-width: $width) { grid-template-rows: repeat($i, minmax(auto, 120px)) }
+          @media (min-width: $width) { grid-template-rows: repeat($i, minmax(auto, 100px)) }
         }
       }
     }
@@ -227,13 +236,13 @@ span {
 
 .viewport {
   position: relative;
-  padding-top: 48px;
   width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 76px;
+  padding: 60px 0;
 
   #settings {
     position: absolute;
@@ -422,18 +431,25 @@ span {
     overflow-y: auto;
   }
 
-  #dados {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+  // #dados {
+  //   display: flex;
+  //   flex-wrap: wrap;
+  //   gap: 8px;
     
+  //   & > * {
+  //     .card {
+  //       height: 180px;
+  //       overflow-y: auto;
+  //     }
+  //     flex-basis: calc(50% - 4px);
+  //   }
+  // }
+
+  #estados-especiais {
+    justify-content: center;
+
     & > * {
-      .card {
-        height: 180px;
-        overflow-y: auto;
-      }
-      flex-basis: calc(50% - 4px);
+      flex-grow: 0;
     }
   }
-
 }
