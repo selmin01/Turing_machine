@@ -42,7 +42,17 @@ export interface IControladorMaquina {
   alterarTick: (t: Tick) => void
 }
 
-const isSimbolo = (str: string): str is Simbolo => /^.$/.test(str)
+export function isSimbolo (v: unknown): v is Simbolo {
+  if (typeof v != "string")
+    return false
+      
+  return /^.$/.test(v)
+}
+
+export function isMovimento(v: unknown): v is Movimento {
+  return (typeof v == "string") && (v == "Esquerda" || v == "Direita")
+}
+  
 
 
 export default class MaquinaTuring {
