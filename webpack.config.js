@@ -45,5 +45,11 @@ module.exports = {
       }
     ]
   },
-  resolve: { extensions: [ ".ts", ".js" ] }
+  resolve: { extensions: [".ts", ".js"] },
+  devServer: {
+    port: 3000,
+    hot: false,
+    open: true,
+    liveReload: true
+  }
 }

@@ -109,109 +109,103 @@ $breakpoints: (
   }
 }
 
-.grid-viewport {
-  width: 100%;
+.grid {
+  // 0-599px - xs
+  display: grid;
   position: relative;
-  display: flex;
-  justify-content: center;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: auto;
+  width: 100%;
+  padding: 0 16px;
+  gap: 4px;
 
-  .grid {
-    // 0-599px - xs
-    display: grid;
-    position: relative;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-auto-rows: auto;
-    width: 100%;
-    padding: 0 16px;
-    gap: 4px;
-
-    @each $breakpoint, $width in $breakpoints {
-      @for $i from 1 through 12 {
-        &.r#{$i} { grid-template-rows: repeat($i, minmax(auto, 100px)); }
-        &.#{$breakpoint}-r#{$i} {
-          @media (min-width: $width) { grid-template-rows: repeat($i, minmax(auto, 100px)) }
-        }
+  @each $breakpoint, $width in $breakpoints {
+    @for $i from 1 through 12 {
+      &.r#{$i} { grid-template-rows: repeat($i, minmax(auto, 100px)); }
+      &.#{$breakpoint}-r#{$i} {
+        @media (min-width: $width) { grid-template-rows: repeat($i, minmax(auto, 100px)) }
       }
-    }
-
-    @media (min-width: 600px) { // 600-904px - sm
-      grid-template-columns: repeat(8, minmax(0, 1fr));
-      padding: 0 32px;
-      gap: 8px;
-    }
-
-    @media (min-width: 905px) { // 905-1239px - md
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      padding: 0;
-      width: 840px;
-      gap: 12px;
-    }
-
-    @media (min-width: 1240px) { // 1240-1439px - lg
-      width: 100%;
-      padding: 0 200px;
-      gap: 16px;
-    }
-
-    @media (min-width: 1440px) { // 1440+px - xl 
-      padding: 0;
-      width: 1040px;
-    }
-
-    .grid-item {
-      display: flex;
-      grid-column: span 1;
-
-      & > * {
-        flex-grow: 1;
-      }
-
-      &.fr { grid-row: 1 / -1 }
-      @each $breakpoint, $width in $breakpoints {
-        @media (min-width: $width) {
-          &.#{$breakpoint}-fr { grid-row: 1 / -1 }
-          @for $i from 1 through 12 {
-            &.s#{$i} { grid-column: span $i }
-            &.r#{$i} { grid-row: span $i }
-            &.#{$breakpoint}-s#{$i} { grid-column: span $i }
-            &.#{$breakpoint}-r#{$i} { grid-row: span $i }
-          }
-        }
-      }
-
-      &.s-half {
-        grid-column: span 2;
-        @media (min-width: 600px) {
-          grid-column: span 4;
-        }
-        @media (min-width: 905px) {
-          grid-column: span 6;
-        }
-      }
-
-      &.isolated {
-        grid-column: 1 / 5;
-        @media (min-width: 600px) {
-          grid-column: 1 / 9;
-        }
-        @media (min-width: 905px) {
-          grid-column: 1 / 13;
-        }
-      }
-
-      @for $i from 0 through 5 {
-        &.center-#{$i} { grid-column: min(2, $i + 1) / max(4, 5 - $i) }
-        @media (min-width: 600px) {
-          &.center-#{$i} { grid-column: min(4, $i + 1) / max(6, 9 - $i) }
-        }
-        @media (min-width: 905px) {
-          &.center-#{$i} { grid-column: min(6, $i + 1) / max(8, 13 - $i) }
-        }
-      }
-
     }
   }
+
+  @media (min-width: 600px) { // 600-904px - sm
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    padding: 0 32px;
+    gap: 8px;
+  }
+
+  @media (min-width: 905px) { // 905-1239px - md
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    padding: 0;
+    width: 840px;
+    gap: 12px;
+  }
+
+  @media (min-width: 1240px) { // 1240-1439px - lg
+    width: 100%;
+    padding: 0 200px;
+    gap: 16px;
+  }
+
+  @media (min-width: 1440px) { // 1440+px - xl 
+    padding: 0;
+    width: 1040px;
+  }
+
+  .grid-item {
+    display: flex;
+    grid-column: span 1;
+
+    & > * {
+      flex-grow: 1;
+    }
+
+    &.fr { grid-row: 1 / -1 }
+    @each $breakpoint, $width in $breakpoints {
+      @media (min-width: $width) {
+        &.#{$breakpoint}-fr { grid-row: 1 / -1 }
+        @for $i from 1 through 12 {
+          &.s#{$i} { grid-column: span $i }
+          &.r#{$i} { grid-row: span $i }
+          &.#{$breakpoint}-s#{$i} { grid-column: span $i }
+          &.#{$breakpoint}-r#{$i} { grid-row: span $i }
+        }
+      }
+    }
+
+    &.s-half {
+      grid-column: span 2;
+      @media (min-width: 600px) {
+        grid-column: span 4;
+      }
+      @media (min-width: 905px) {
+        grid-column: span 6;
+      }
+    }
+
+    &.isolated {
+      grid-column: 1 / 5;
+      @media (min-width: 600px) {
+        grid-column: 1 / 9;
+      }
+      @media (min-width: 905px) {
+        grid-column: 1 / 13;
+      }
+    }
+
+    @for $i from 0 through 5 {
+      &.center-#{$i} { grid-column: min(2, $i + 1) / max(4, 5 - $i) }
+      @media (min-width: 600px) {
+        &.center-#{$i} { grid-column: min(4, $i + 1) / max(6, 9 - $i) }
+      }
+      @media (min-width: 905px) {
+        &.center-#{$i} { grid-column: min(6, $i + 1) / max(8, 13 - $i) }
+      }
+    }
+
+  }
 }
+
 
 span {
   &.cor-preto {
