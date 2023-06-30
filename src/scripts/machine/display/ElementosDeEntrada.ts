@@ -1,7 +1,8 @@
 import MaquinaTuring, { Estado, Fita, IControladorMaquina, IDadosMaquinaTuring, IEntradaMT, Parada, Tick, Transicao } from "../logic/MaquinaTuring"
-import Icons from "./icons"
+import Icons from "../../components/icons"
 import ControladorUIMT, { IElementosComEstado } from "./ControladorUIMT"
 import criarMaquinaTuring from "../criarMaquinaTuring"
+import ErrorHandler from "../../components/ErrorHandler"
 
 export default class ElementosDeEntrada {
   private _maquinaTuring: MaquinaTuring
@@ -18,20 +19,24 @@ export default class ElementosDeEntrada {
   private _rodando: boolean = false
 
   private eventoPlayPause = (e: MouseEvent) => {
-    if (this._maquinaTuring.status === "Não iniciada") {
-      this._maquinaTuring.rodar()
-      this._botaoPlayPause.innerHTML = ""
-      this._botaoPlayPause.appendChild(Icons.pauseIcon(48, "#111414"))
-    } else {
-      if (!this._rodando) {
-        this._maquinaTuring.retomar()
+    try {
+      if (this._maquinaTuring.status === "Não iniciada") {
+        this._maquinaTuring.rodar()
         this._botaoPlayPause.innerHTML = ""
         this._botaoPlayPause.appendChild(Icons.pauseIcon(48, "#111414"))
       } else {
-        this._maquinaTuring.pausar()
-        this._botaoPlayPause.innerHTML = ""
-        this._botaoPlayPause.appendChild(Icons.playIcon(48, "#111414"))
+        if (!this._rodando) {
+          this._maquinaTuring.retomar()
+          this._botaoPlayPause.innerHTML = ""
+          this._botaoPlayPause.appendChild(Icons.pauseIcon(48, "#111414"))
+        } else {
+          this._maquinaTuring.pausar()
+          this._botaoPlayPause.innerHTML = ""
+          this._botaoPlayPause.appendChild(Icons.playIcon(48, "#111414"))
+        }
       }
+    } catch (error) {
+      ErrorHandler.instance.showError(error as string)
     }
 
     this._rodando = !this._rodando

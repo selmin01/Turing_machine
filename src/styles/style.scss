@@ -464,3 +464,32 @@ span {
     }
   }
 }
+
+#errors-container {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 320px;
+
+  li.error-message {
+    transform: translateY(0);
+    position: absolute;
+    background-color: #dc3545;
+    color: white;
+    padding: 20px 28px;
+    opacity: 0;
+    transition: 0.25s ease-in-out;
+    bottom: 0;
+    right: 0;
+
+    div.error-message-bar {
+      position: absolute;
+      background-color: white;
+      opacity: 0.6;
+      height: 4px;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+  }
+}

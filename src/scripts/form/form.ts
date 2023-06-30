@@ -1,3 +1,4 @@
+import ErrorHandler from "../components/ErrorHandler";
 import criarMaquinaTuring from "../machine/criarMaquinaTuring";
 import { IEntradaMT, Transicao, isMovimento, isSimbolo } from "../machine/logic/MaquinaTuring";
 
@@ -28,6 +29,7 @@ if (!spanTituloTransicoes) throw new Error("Span do título de transições não
 const arrayTransicoes: Transicao[] = [];
 
 formAddTransicao.addEventListener('submit', (event: SubmitEvent) => {
+    try { 
     // Evita o comportamento padrão do envio do formulário
     event.preventDefault();
   
@@ -68,7 +70,10 @@ formAddTransicao.addEventListener('submit', (event: SubmitEvent) => {
     
     // Nova transição adicionada tanto na lista do HTML quanto na estrutura de dados
     ulTransicoes.appendChild(listItem)
-    arrayTransicoes.push(novaTransicao)
+        arrayTransicoes.push(novaTransicao)
+    } catch (error) {
+        ErrorHandler.instance.showError(error as string)
+    }
 });
 
 botaoRemoverTransicao.addEventListener("click", () => {
@@ -79,6 +84,7 @@ botaoRemoverTransicao.addEventListener("click", () => {
 })
 
 botaoCriarMT.addEventListener("click", () => {
+    try {
     const estadosEspeciaisFormData = new FormData(formEstadosEspeciais)
     
     const q0 = estadosEspeciaisFormData.get("q0")?.toString()
@@ -93,12 +99,9 @@ botaoCriarMT.addEventListener("click", () => {
     }
 
     localStorage.setItem("entradaMT", JSON.stringify(entradaMT))
-    window.location.href ="/machine.html"
-
-    // try {
-    //     window.location.href = "/turing-machine.html"
-    //     criarMaquinaTuring(entradaMT)
-    // } catch (error) {
-    //     console.log(error)
-    // }
+        window.location.href = "/machine.html"
+        
+    } catch (error) {
+        ErrorHandler.instance.showError(error as string)
+    } 
 })

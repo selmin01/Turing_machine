@@ -1,5 +1,6 @@
 import { IEntradaMT } from "./logic/MaquinaTuring";
 import criarMaquinaTuring from "./criarMaquinaTuring";
+import ErrorHandler from "../components/ErrorHandler";
 
 const mockDadosMaquina: IEntradaMT = {
   δ: [
@@ -29,6 +30,7 @@ try {
   const entradaMT: IEntradaMT = JSON.parse(data)
   criarMaquinaTuring(entradaMT)
 } catch (error) {
+  const errorHandler = ErrorHandler.instance
   window.location.href = "/"
-  console.log(error)
+  errorHandler.showError(error as string)
 }
