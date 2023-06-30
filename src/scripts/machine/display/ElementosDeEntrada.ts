@@ -1,7 +1,7 @@
 import MaquinaTuring, { Estado, Fita, IControladorMaquina, IDadosMaquinaTuring, IEntradaMT, Parada, Tick, Transicao } from "../logic/MaquinaTuring"
 import Icons from "./icons"
 import ControladorUIMT, { IElementosComEstado } from "./ControladorUIMT"
-import criarMaquinaTuring from "../../criarMaquinaTuring"
+import criarMaquinaTuring from "../criarMaquinaTuring"
 
 export default class ElementosDeEntrada {
   private _maquinaTuring: MaquinaTuring

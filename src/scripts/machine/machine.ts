@@ -1,4 +1,4 @@
-import { IEntradaMT } from "./machine/logic/MaquinaTuring";
+import { IEntradaMT } from "./logic/MaquinaTuring";
 import criarMaquinaTuring from "./criarMaquinaTuring";
 
 const mockDadosMaquina: IEntradaMT = {
@@ -20,4 +20,15 @@ const mockDadosMaquina: IEntradaMT = {
   qR: "q_rejeita",
 };
 
-criarMaquinaTuring(mockDadosMaquina)
+try {
+  const data: string | null = localStorage.getItem("entradaMT")
+  if (!data) {
+    window.location.href = "/"
+    throw new Error("Dados de entrada não identificados.")
+  }
+  const entradaMT: IEntradaMT = JSON.parse(data)
+  criarMaquinaTuring(entradaMT)
+} catch (error) {
+  window.location.href = "/"
+  console.log(error)
+}

@@ -10,112 +10,119 @@
 <body>
   <div class="viewport">
 
-    <h3 class="text-center">Bem-vindo a MT</h3>
+    <h3 class="text-center">Crie sua Máquina de Turing!</h3>
 
-    <div class="container">
+    <div class="grid r6">
+      <div class="main-form grid-item r6 xs-s4 sm-s4 md-s6">
+        <div class="card">
+          <div class="card-header">
+            Transições da MT
+          </div>
+          <!-- <img src="../src/assets/img/Definição_MT.png" class="card-img-top" alt="..."> -->
+          <div class="card-body">
+            <form id="form-transicao" class="d-flex flex-column gap-2">
 
-      <div class="left-panel">
-
-        <div class="centralized"><!-- Conteúdo do painel esquerdo -->
-            <div class="card" style="width: 30rem;">
-              <div class="card-header">
-                Transições da MT
+              <div>
+                <label class="form-label">Estado de origem</label>
+                <input type="text" class="form-control" id="estado" name="estado">
               </div>
-              <!-- <img src="../src/assets/img/Definição_MT.png" class="card-img-top" alt="..."> -->
-              <div class="card-body">
-                <form id="cadastroEstado" class="d-flex flex-column gap-2">
 
-                  <div>
-                    <label class="form-label">Estado de origem</label>
-                    <input type="text" class="form-control" id="estado" name="estado">
-                  </div>
-                
-                  <!-- <label class="form-label">Selecione o tipo de estado:</label>
-                  <br>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="tipo" name="tipo" value="inicial">
-                    <label class="form-check-label" for="inlineCheckbox1">Inicial</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="tipo" name="tipo" value="q_aceita">
-                    <label class="form-check-label" for="inlineCheckbox1">Aceitação</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="tipo" name="tipo" value="q_rejeita">
-                    <label class="form-check-label" for="inlineCheckbox2">Rejeição</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="tipo" name="tipo" value="q">
-                    <label class="form-check-label" for="inlineCheckbox2">Qualquer</label>
-                  </div>
-                  <hr> -->
-
-                  <div>
-                    <label class="form-label">Símbolo de leitura</label>
-                    <input type="text" class="form-control" id="leitura" name="leitura">
-                  </div>
-
-                  <hr>
-                  
-                  <div>
-                    <label class="form-label">Estado de Destino</label>
-                    <input type="text" class="form-control" id="estadoDestino" name="estadoDestino">
-                    <!-- <div id="emailHelp" class="form-text">Formato: q0, q1,q2,q3</div> -->
-                  </div>
-
-                  <div>
-                    <label class="form-label">Símbolo de escrita</label>
-                    <input type="text" class="form-control" id="escrita" name="escrita">
-                  </div>
-                  
-                  <div>
-                    <label class="form-label">Movimento</label>
-                    <br>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" id="movimento" name="movimento" value="Esquerda">
-                      <label class="form-check-label" for="inlineCheckbox1">Esquerda</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" id="movimento" name="movimento" value="Direita">
-                      <label class="form-check-label" for="inlineCheckbox2">Direita</label>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div class="p-3 border btn-group container-start">
-                      <button class="btn btn-primary" type="submit">Adicionar Transição</button>
-                      <button class="btn btn-danger" onclick="removeEstado()">Remover Transição</button>
-                      <button class="btn btn-warning" type="reset" name="limpar" value="0">Limpar</button>
-                    </div>
-                  </div>
-                </form>
+              <div>
+                <label class="form-label">Símbolo de leitura</label>
+                <input type="text" class="form-control" id="leitura" name="leitura">
               </div>
-            </div>
+
+              <hr>
+              
+              <div>
+                <label class="form-label">Estado de Destino</label>
+                <input type="text" class="form-control" id="estadoDestino" name="estadoDestino">
+                <!-- <div id="emailHelp" class="form-text">Formato: q0, q1,q2,q3</div> -->
+              </div>
+
+              <div>
+                <label class="form-label">Símbolo de escrita</label>
+                <input type="text" class="form-control" id="escrita" name="escrita">
+              </div>
+              
+              <div>
+                <label class="form-label">Movimento</label>
+                <br>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="movimento" name="movimento" value="Esquerda">
+                  <label class="form-check-label" for="inlineCheckbox1">Esquerda</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="movimento" name="movimento" value="Direita">
+                  <label class="form-check-label" for="inlineCheckbox2">Direita</label>
+                </div>
+              </div>
+
+              <div>
+                <div class="p-3 border btn-group container-start">
+                  <button id="adicionar-transicao" class="btn btn-primary" type="submit">+ Transição</button>
+                  <button id="remover-transicao" class="btn btn-danger">- Transição</button>
+                  <button id="limpar-transicoes" class="btn btn-warning" type="reset" name="limpar" value="0">Limpar</button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
-
       </div>
 
-      <div class="right-panel">
+      <!-- Estados especiais -->
+      <div class="grid-item r2 md-order1 md-s6 xs-s4">
+        <div class="card">
+          <div class="card-header">
+            Estados especiais
+          </div>
+          <div class="card-body d-flex align-items-center">
+            <form id="form-estados-especiais">
+              <div class="row">
+                <div class="col">
+                  <label class="form-label">Estado inicial</label>
+                  <input type="text" name="q0" class="form-control" placeholder="q0">
+                </div>
+                <div class="col">
+                  <label class="form-label">Est. de aceitação</label>
+                  <input type="text" name="qA" class="form-control" placeholder="qAceita">
+                </div>
+                <div class="col">
+                  <label class="form-label">Est. de rejeição</label>
+                  <input type="text" name="qR" class="form-control" placeholder="qRejeita">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Informações da máquina -->
+      <div class="grid-item r4 xs-s4 md-s6 xs-order-1 sm-order2">
         
-        <div class="centralized"><!-- Conteúdo do painel direito -->
-          <div class="card"  style="width: 18rem;">
+          <div class="card" >
             <div class="card-header">
-              Informações da Máquina
+              Transições
             </div>
             <div class="card-body">
-              <div class="quadro">
-                <p id="quadro">Seu texto aqui</p>
+              <div id="quadro">
+                <div id="estados"></div>
+                  <span id="transicoes-title">As transições da sua máquina aparecerão aqui!</span><br><br>
+                <ul id="transicoes">
+                </ul>
               </div>
               <hr>
               <br>
               <div class="container-start">
-                <a href="/turing-machine.html" type="submit" class="btn btn-success btn-start">Go!</a>
+                <button id="criar-mt" href="/turing-machine.html" type="submit" class="btn btn-success btn-start">Go!</button>
               </div>
             </div>
           </div>
-        </div>
+        
 
       </div>
+
+      
     </div>
 <br>
   </div>
