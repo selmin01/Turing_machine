@@ -1,7 +1,7 @@
-import MaquinaTuring, { IControladorMaquina, IEntradaMT } from "./logic/MaquinaTuring"
-import ControladorUIMT, { IElementosComEstado } from "./display/ControladorUIMT"
-import ElementosDeSaida from "./display/ElementosDeSaida"
-import ElementosDeEntrada from "./display/ElementosDeEntrada"
+import MaquinaTuring, { IControladorMaquina, IEntradaMT } from "./machine/logic/MaquinaTuring"
+import ControladorUIMT, { IElementosComEstado } from "./machine/display/ControladorUIMT"
+import ElementosDeSaida from "./machine/display/ElementosDeSaida"
+import ElementosDeEntrada from "./machine/display/ElementosDeEntrada"
 
 export default function criarMaquinaTuring(dados: IEntradaMT): void {
   const controlador = new ControladorUIMT(new ElementosDeSaida())

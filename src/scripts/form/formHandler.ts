@@ -1,6 +1,4 @@
-import { IEntradaMT, Transicao, isMovimento, isSimbolo } from "./logic/MaquinaTuring";
-
-console.log("Hello from machine_turing")
+import { IEntradaMT, Transicao, isMovimento, isSimbolo } from "../machine/logic/MaquinaTuring";
 
 const arrayItem: Transicao[] = [];
 const infoList: string[] = [];

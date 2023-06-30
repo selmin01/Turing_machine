@@ -6,8 +6,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 module.exports = {
   entry: {
     global: "./src/index.ts",
-    main: "./src/scripts/machine_turing.ts",
-    turing_machine: "./src/scripts/mockScript.ts",
+    form: "./src/scripts/form/formHandler.ts",
+    machine: "./src/scripts/mockScript.ts",
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -17,12 +17,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./src/pages/index.html",
       filename: "index.html",
-      chunks: ["global", "main"]
+      chunks: ["global", "form"]
     }),
     new HtmlWebpackPlugin({
       template: "./src/pages/turing-machine.html",
       filename: "turing-machine.html",
-      chunks: ["global", "turing_machine"]
+      chunks: ["global", "machine"]
     }),
     new MiniCssExtractPlugin()
   ],

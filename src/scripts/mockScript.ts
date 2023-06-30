@@ -1,4 +1,4 @@
-import { IEntradaMT } from "./logic/MaquinaTuring";
+import { IEntradaMT } from "./machine/logic/MaquinaTuring";
 import criarMaquinaTuring from "./criarMaquinaTuring";
 
 const mockDadosMaquina: IEntradaMT = {
