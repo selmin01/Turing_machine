@@ -7,7 +7,7 @@ type Cor = "preto"
   | "verde"
   | "amarelo"
 
-export interface IElementos {
+export interface IElementosComEstado {
   fita: HTMLUListElement
   spanEstadoInicial: HTMLSpanElement
   spanEstadoRejeicao: HTMLSpanElement
@@ -21,7 +21,7 @@ export interface IElementos {
   ulTransicoes: HTMLUListElement
 }
 
-export default class ControladorUIFita implements IControladorMaquina {
+export default class ControladorUIMT implements IControladorMaquina {
   private _dadosMT?: IDadosMaquinaTuring
 
   private _fita: HTMLUListElement
@@ -154,7 +154,7 @@ export default class ControladorUIFita implements IControladorMaquina {
     element.classList.add(`cor-${cor}`)
   }
 
-  constructor(elementos: IElementos) {
+  constructor(elementos: IElementosComEstado) {
     this._fita = elementos.fita
     this._spanEstadoInicial = elementos.spanEstadoInicial
     this._spanEstadoRejeicao = elementos.spanEstadoRejeicao

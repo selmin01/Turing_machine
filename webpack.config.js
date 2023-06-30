@@ -7,7 +7,7 @@ module.exports = {
   entry: {
     global: "./src/index.ts",
     main: "./src/scripts/machine_turing.ts",
-    turing_machine: "./src/scripts/script.ts",
+    turing_machine: "./src/scripts/mockScript.ts",
   },
   output: {
     path: path.resolve(__dirname, "dist"),

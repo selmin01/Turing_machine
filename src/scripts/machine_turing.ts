@@ -1,4 +1,4 @@
-import { IEntradaMT, Transicao, isMovimento, isSimbolo } from "../logic/MaquinaTuring";
+import { IEntradaMT, Transicao, isMovimento, isSimbolo } from "./logic/MaquinaTuring";
 
 console.log("Hello from machine_turing")
 

@@ -68,6 +68,8 @@ export default class MaquinaTuring {
   private _status: StatusMaquina
   private _fita: Fita
   private controlador: IControladorMaquina
+  
+  private _operationTimeoutID?: NodeJS.Timeout
 
   private getDados(): IDadosMaquinaTuring {
     return {
@@ -79,6 +81,61 @@ export default class MaquinaTuring {
       qA: this._qA,
       qR: this._qR,
     }
+  }
+
+  private operacao() {
+    const { conteudo, estadoAtual, cabecote } = this._fita
+    const simboloAtual = conteudo[cabecote] ?? ' '
+
+    if (this._status != "Computando")
+      return
+    
+    if (cabecote > 1000)
+      throw new Error("A produção ficou muito longa (provavalmente a MT entrou em loop!)")
+
+    if (estadoAtual === this._qA) {
+      this._status = "Aceitou"
+      this.controlador.finalizarComputacao(this._status)
+      return
+    }
+
+    if (estadoAtual === this._qR) {
+      this._status = "Rejeitou, estado de rejeição"
+      this.controlador.finalizarComputacao(this._status)
+      return
+    }
+
+    const transicao = this._δ.find(t => t[0] === estadoAtual && t[1] === simboloAtual)
+    if (!transicao) {
+      this._status = "Rejeitou por indefinição"
+      this.controlador.finalizarComputacao(this._status)
+      return
+    }
+
+    const [, , estDestino, simbEscrita, mov] = transicao
+
+    // console.log(`Movimento da transicao: ${mov}`)
+    // console.log(`Simbolo de escrita: ${simbEscrita}`)
+
+    // Atualizar o conteúdo da fita
+    this._fita.conteudo = this._fita.conteudo.slice(0, cabecote)
+      + simbEscrita
+      + this._fita.conteudo.slice(cabecote + 1)
+
+    // Atualizar o estado atual
+    this._fita.estadoAtual = estDestino
+
+    // Atualizar pos. do cabeçote
+    if (mov === "Direita")
+      this._fita.cabecote = cabecote + 1
+    else if (mov === "Esquerda")
+      this._fita.cabecote = cabecote - 1 <= 0 ? 0 : cabecote - 1
+    
+    this.controlador.aplicarTransicao(transicao)
+
+    // console.log("conteudo: " + conteudo)
+
+    this._operationTimeoutID = setTimeout(() => this.operacao(), 1000 / this._tick)
   }
 
   constructor(dadosEntrada: IEntradaMT, controlador: IControladorMaquina) {
@@ -154,6 +211,15 @@ export default class MaquinaTuring {
     this.controlador.pausarComputacao()
   }
 
+  retomar() {
+    if (this._operationTimeoutID)
+      clearTimeout(this._operationTimeoutID)
+
+    this._status = "Computando"
+    this.controlador.iniciarComputacao()
+    this._operationTimeoutID = setTimeout(() => this.operacao(), 1000 / this._tick)
+  }
+
   reinicializar() {
     this._fita.conteudo = this._palavraEntrada
     this._fita.cabecote = 0
@@ -197,62 +263,7 @@ export default class MaquinaTuring {
 
     this.controlador.iniciarComputacao()
 
-    const operacao = () => {
-      const { conteudo, estadoAtual, cabecote } = this._fita
-      const simboloAtual = conteudo[cabecote] ?? ' '
-
-      if (this._status != "Computando")
-        return
-      
-      if (cabecote > 1000)
-        throw new Error("A produção ficou muito longa (provavalmente a MT entrou em loop!)")
-
-      if (estadoAtual === this._qA) {
-        this._status = "Aceitou"
-        this.controlador.finalizarComputacao(this._status)
-        return
-      }
-
-      if (estadoAtual === this._qR) {
-        this._status = "Rejeitou, estado de rejeição"
-        this.controlador.finalizarComputacao(this._status)
-        return
-      }
-
-      const transicao = this._δ.find(t => t[0] === estadoAtual && t[1] === simboloAtual)
-      if (!transicao) {
-        this._status = "Rejeitou por indefinição"
-        this.controlador.finalizarComputacao(this._status)
-        return
-      }
-
-      const [, , estDestino, simbEscrita, mov] = transicao
-
-      // console.log(`Movimento da transicao: ${mov}`)
-      // console.log(`Simbolo de escrita: ${simbEscrita}`)
-
-      // Atualizar o conteúdo da fita
-      this._fita.conteudo = this._fita.conteudo.slice(0, cabecote)
-        + simbEscrita
-        + this._fita.conteudo.slice(cabecote + 1)
-
-      // Atualizar o estado atual
-      this._fita.estadoAtual = estDestino
-
-      // Atualizar pos. do cabeçote
-      if (mov === "Direita")
-        this._fita.cabecote = cabecote + 1
-      else if (mov === "Esquerda")
-        this._fita.cabecote = cabecote - 1 <= 0 ? 0 : cabecote - 1
-      
-      this.controlador.aplicarTransicao(transicao)
-
-      // console.log("conteudo: " + conteudo)
-
-      setTimeout(() => operacao(), 1000 / this._tick)
-    }
-
-    operacao()
+    this.operacao()
   }
 
   mudarTick(tick: Tick) {
@@ -294,6 +305,10 @@ export default class MaquinaTuring {
 
   get tick(): Tick {
     return this._tick
+  }
+
+  get status(): StatusMaquina {
+    return this._status
   }
 
 }
