@@ -7,6 +7,10 @@ import tapeAcceptingVideo from "../../assets/videos/tape-accepting.webm"
 import tapeRejectingVideo from "../../assets/videos/tape-rejecting.webm"
 import tapeLoopVideo from "../../assets/videos/tape-loop.webm"
 
+const inputQ0: HTMLInputElement | null =
+    document.querySelector("#estado")
+if (!inputQ0) throw new Error("Input do estado inicial não identificado.")
+
 const formAddTransicao: HTMLFormElement | null =
     document.querySelector('#form-transicao') as HTMLFormElement;
 if (!formAddTransicao) throw new Error("Formulário de transições não identificado.")
@@ -104,6 +108,8 @@ formAddTransicao.addEventListener('submit', (event: SubmitEvent) => {
     // Nova transição adicionada tanto na lista do HTML quanto na estrutura de dados
     ulTransicoes.appendChild(listItem)
         arrayTransicoes.push(novaTransicao)
+
+    inputQ0.focus()
     } catch (error) {
         ErrorHandler.instance.showError(error as string)
     }
