@@ -432,6 +432,9 @@ span {
 
 
 #dados-mt {
+  span, li {
+    font-family: "Courier new", monospace;
+  }
   #dados-correntes-mt {
     display: flex;
     justify-content: center;

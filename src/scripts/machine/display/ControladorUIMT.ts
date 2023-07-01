@@ -185,7 +185,7 @@ export default class ControladorUIMT implements IControladorMaquina {
     const liElements = δ.map(
       ([e1, s1, e2, s2, mov]) => {
         const li = document.createElement("li")
-        li.innerText = `δ ('${e1}', '${s1}') = ('${e2}', '${s2}', '${mov}')`
+        li.innerText = `δ (${e1}, '${s1}') = (${e2}, '${s2}', ${mov})`
         return li
       }
       ).sort()
