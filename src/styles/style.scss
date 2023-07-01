@@ -15,6 +15,10 @@
 //   background-color: #eaeaea; /* Cor de fundo do painel direito */
 // }
 
+h1, h2 {
+  text-align: center;
+}
+
 .nomeDaMaquina {
   -webkit-text-stroke-width: 1.5px; /* largura da borda */
   -webkit-text-stroke-color: blueviolet; /* cor da borda */
@@ -503,5 +507,20 @@ ul#errors-container {
       left: 0;
       width: 100%;
     }
+  }
+}
+
+ul#mt-content-elements {
+  & > li {
+    list-style: disc;
+  }
+}
+
+.tape-video-container {
+  display: flex;
+  justify-content: center;
+  padding: 32px;
+  & > video {
+    width: 60%;
   }
 }

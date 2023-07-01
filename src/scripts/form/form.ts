@@ -2,6 +2,11 @@ import ErrorHandler from "../components/ErrorHandler";
 import criarMaquinaTuring from "../machine/criarMaquinaTuring";
 import { IEntradaMT, Transicao, isMovimento, isSimbolo } from "../machine/logic/MaquinaTuring";
 
+import tapeProcessingVideo from "../../assets/videos/tape-processing.webm"
+import tapeAcceptingVideo from "../../assets/videos/tape-accepting.webm"
+import tapeRejectingVideo from "../../assets/videos/tape-rejecting.webm"
+import tapeLoopVideo from "../../assets/videos/tape-loop.webm"
+
 const formAddTransicao: HTMLFormElement | null =
     document.querySelector('#form-transicao') as HTMLFormElement;
 if (!formAddTransicao) throw new Error("Formulário de transições não identificado.")
@@ -25,6 +30,26 @@ if (!botaoCriarMT) throw new Error("Botão de criar MT não identificado.")
 const spanTituloTransicoes: HTMLSpanElement | null =
     document.querySelector("#transicoes-title")
 if (!spanTituloTransicoes) throw new Error("Span do título de transições não identificado.")
+
+const tapeProcessingVideoElement: HTMLVideoElement | null =
+    document.querySelector("#tape-processing-video")
+if (!tapeProcessingVideoElement) throw new Error("Tag do vídeo de processamento da fita não identificado.")
+tapeProcessingVideoElement.src = tapeProcessingVideo
+
+const tapeAcceptingVideoElement: HTMLVideoElement | null =
+    document.querySelector("#tape-accepting-video")
+if (!tapeAcceptingVideoElement) throw new Error("Tag do vídeo de aceitação da fita não identificado.")
+tapeAcceptingVideoElement.src = tapeAcceptingVideo
+
+const tapeRejectingVideoElement: HTMLVideoElement | null =
+    document.querySelector("#tape-rejecting-video")
+if (!tapeRejectingVideoElement) throw new Error("Tag do vídeo de rejeição da fita não identificado.")
+tapeRejectingVideoElement.src = tapeRejectingVideo
+
+const tapeLoopVideoElement: HTMLVideoElement | null =
+    document.querySelector("#tape-loop-video")
+if (!tapeLoopVideoElement) throw new Error("Tag do vídeo de loop da fita não identificado.")
+tapeLoopVideoElement.src = tapeLoopVideo
 
 const arrayTransicoes: Transicao[] = [];
 
@@ -114,7 +139,3 @@ botaoCriarMT.addEventListener("click", () => {
         ErrorHandler.instance.showError(error as string)
     }
 })
-
-const buttonAddErrors = document.querySelector("#adderrors")
-buttonAddErrors?.addEventListener("click", () =>
-    ErrorHandler.instance.showError("Mensagem de erro - Teste"))

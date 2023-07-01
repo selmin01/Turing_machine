@@ -12,7 +12,9 @@
 
     <h3 class="text-center">Crie sua Máquina de Turing!</h3>
 
-    <div class="grid r6">
+    <div id="mt-input" class="grid r6">
+
+      <!-- Formulário principal -->
       <div class="main-form grid-item r6 xs-s4 sm-s4 md-s6">
         <div class="card">
           <div class="card-header">
@@ -72,7 +74,7 @@
             </form>
           </div>
         </div>
-      </div>
+      </div> <!-- Formulário principal -->
 
       <!-- Estados especiais -->
       <div class="grid-item r2 md-order1 md-s6 xs-s4">
@@ -99,7 +101,7 @@
             </form>
           </div>
         </div>
-      </div>
+      </div> <!-- Estados especiais -->
 
       <!-- Informações da máquina -->
       <div class="grid-item r4 xs-s4 md-s6 xs-order-1 sm-order2">
@@ -124,17 +126,117 @@
           </div>
         
 
+      </div> <!-- Informações da máquina -->
+
+    </div><!-- grid -->
+
+    <div id="content" class="grid">
+
+      <hr class="grid-item isolated">
+
+      <!-- O que é uma Máquina de Turing -->
+      <div id="content-section-1" class="grid-item isolated flex-column gap-4">
+
+        <h2>O que é uma Máquina de Turing</h2>
+
+        <div>
+          <h3>Quem é Alan Turing?</h3>
+          <p><strong>Alan Mathison Turing</strong> foi um matemático, cientista da computação, lógico e criptoanalista britânico. Considerado como o <strong>pai da ciência da computação</strong>, Turing contribuiu com excelência no desenvolvimento da <strong>teoria da computação</strong>, formalizando conceitos como <strong>algoritmo</strong> e <strong>computação</strong>, sobretudo com a <strong>Máquina de Turing</strong>.</p>
+        </div>
+
+        <div>
+          <h3>A Máquina de Turing</h3>
+          <p>Idealizada por Turing como <strong>Máquina Universal</strong>, a Máquina de Turing é um dispositivo teórico que pode ser concebido como um <strong>modelo abstrato de um computador</strong>, se restringindo apenas aos aspectos lógicos de seu funcionamento - ignorando toda a implementação física. Em uma máquina de Turing, é possível modelar qualquer computador.</p>
+        </div>
+
+        <div>
+          <h3>Utilidade</h3>
+          <p>Uma Máquina de Turing é, essencialmente, uma máquina que recebe um dado como <strong>entrada</strong>, realiza <strong>processamento</strong> e produz alguma informação na <strong>saída</strong>. Nesse sentido, uma utilidade de formalizações como a Máquina de Turing é que elas podem, por meio de simulações e processos dedutivos, provar matematicamente a existência ou não de <strong>resolução para alguns tipos de problemas</strong> (independentemente da quantidade de recursos computacionais) e isso é útil na tomada de decisão prática na resolução de problemas computacionais.</p>
+        </div>
+
+        <div>
+          <h3>Contexto teórico</h3>
+          <p>A Máquina de Turing é um formalismo abstrato pertencente à <strong>Teoria da Computação</strong> e demanda conhecimentos específicos como <strong>Matemática Discreta</strong>, <strong>Teoria dos Conjuntos</strong>, <strong>Teoria dos Sistemas</strong>, <strong>Linguagens Formais</strong> e <strong>Autômatos</strong>. </p>
+        </div>
+
       </div>
 
-      
+      <hr class="grid-item isolated">
+
+      <!-- Como funciona -->
+      <div id="content-section-2" class="grid-item isolated flex-column gap-4">
+        
+        <h2>Como funciona</h2>
+
+        <div>
+          <h3>Palavra de entrada</h3>
+          <p>Antes de iniciar o processamento, uma sequência de símbolos (a palavra de entrada) precisa ser fornecida à Máquina. Essa palavra significa a <strong>instância do problema</strong> que se deseja resolver com a máquina, que realizará seu processamento de acordo com a sua função de transição.</p>
+        </div>
+
+        <div>
+          <h3>Processamento</h3>
+
+          <div class="tape-video-container">
+            <video id="tape-processing-video" autoplay loop></video>
+          </div>
+
+          <p>Uma Máquina de Turing contém uma “fita” que possui início mas têm <strong>infinitas células</strong>, cada célula podendo comportar um e apenas um símbolo. Além disso, há um <strong>cabeçote</strong> que se localizará em uma célula de cada vez, podendo se movimentar para a esquerda e para a direita. No começo da fita, a palavra de entrada é inserida e, a partir daí, o processamento de inicia de acordo com a função de transição da máquina. Além de modificar o conteúdo (os símbolos das células) da fita, a computação poderá <strong>aceitar</strong> a palavra de entrada, <strong>rejeitar</strong> a palavra de entrada ou <strong>não chegar a conclusão nenhuma</strong>. No ponto de partida, todas as células estão sem símbolo, com exceção daquelas que foram usadas para comportar a palavra de entrada.</p>
+        </div>
+
+        <div>
+          <h3>Os 7 elementos - &ldquo;7-upla&rdquo;</h3>
+          <p>A Máquina de Turing é definida por um conjunto de 7 itens (7-upla): <strong>(Q, Σ, Γ, δ, q0, qA, qR)</strong>, sendo que cada item significa:</p>
+
+          <ul id="mt-content-elements">
+            <li><strong>Q</strong> = Conjunto finito de estados;</li>
+            <li><strong>Σ</strong> = Alfabeto finito da palavra de entrada;</li>
+            <li><strong>Γ</strong> = Alfabeto finito de todos os símbolos que serão usados na fita;</li>
+            <li><strong>δ: Q x Γ ⇒ Q x Γ x {E, D}</strong> = Função parcial de transição, que toma como entrada uma combinação de um estado, símbolo que pertence ao alfabeto da fita e retorna uma outra combinação composta por outro estado, outro símbolo (ambos podem se repetir) e um movimento para a esquerda ou direita;</li>
+            <li><strong>q0</strong>: Estado pertencente ao conjunto Q definido como o estado inicial, ou seja, o estado que estará no registrador de estados quando a máquina iniciar sua computação;</li>
+            <li><strong>qA</strong>: Estado de aceitação, que se for atingido a máquina pára a sua computação respondendo “verdadeiro”. Obrigatoriamente é diferente de qR;</li>
+            <li><strong>qR</strong>: Estado de rejeição, que se for atingido a máquina pára a sua computação respondendo “falso”. Obrigatoriamente é diferente de qA;</li>
+          </ul>
+            
+        </div>
+
+        <div>
+          <h3>Aceitação, rejeição, loop infinito</h3>
+
+          <div class="tape-video-container">
+            <video id="tape-accepting-video" autoplay loop></video>
+          </div>
+
+          <div class="tape-video-container">
+            <video id="tape-rejecting-video" autoplay loop></video>
+          </div>
+
+          <div class="tape-video-container">
+            <video id="tape-loop-video" autoplay loop></video>
+          </div>
+
+          <p>Após definida, uma Máquina de Turing pode iniciar sua computação e gerar três possíveis resultados: <strong>Aceitação</strong>, <strong>Rejeição</strong> ou <strong>inconclusivo</strong> - também conhecido como <strong>loop infinito</strong>. No resultado de aceitação, a Máquina de Turing responde <strong>verdadeiro</strong> para a palavra de entrada que foi dada. No resultado de rejeição, a Máquina de Turing responde <strong>falso</strong> para a palavra de entrada e, no resultado inconclusivo, a máquina computa por muito tempo que não há meios formais de definir se a maneira como a MT foi definida ocasionou uma computação interminável ou se a computação possui um fim mas é muito custosa, temporalmente.  </p>
+        </div>
+
+        <div>
+          <h3>Variantes</h3>
+          <p>Existem <strong>variantes de Máquina de Turing</strong>. Algumas delas são: Máquina de Turing com múltiplas fitas, Máquina de Turing com fita duplamente infinita e Máquina de Turing com movimentos estacionários. Cabe ao contexto da Teoria da Computação definir formalmente a capacidade de computação de cada uma dessas variantes. Neste simulador, apenas a Máquina de Turing tradicional é simulada. </p>
+        </div>
+
+      </div>
+
+      <hr class="grid-item isolated">
+
+      <!-- Como criar -->
+      <div id="content-section-3">
+
+      </div>
+
     </div>
-<br>
-  </div>
+
+  </div><!-- viewport -->
 
   <ul id="errors-container">
 
   </ul>
-
-  <button id="adderrors">add errors</button>
 </body>
 </html>
