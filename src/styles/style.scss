@@ -465,7 +465,7 @@ span {
   }
 }
 
-#errors-container {
+ul#errors-container {
   position: fixed;
   bottom: 32px;
   right: 32px;
@@ -476,11 +476,20 @@ span {
     position: absolute;
     background-color: #dc3545;
     color: white;
-    padding: 20px 28px;
+    padding: 32px 24px;
     opacity: 0;
-    transition: 0.25s ease-in-out;
+    transition: opacity 250ms ease-in-out, 
+                transform 250ms ease-in-out;
     bottom: 0;
     right: 0;
+    &:hover { background-color: #e75c6a; }
+
+    .close {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      cursor: pointer;
+    }
 
     div.error-message-bar {
       position: absolute;

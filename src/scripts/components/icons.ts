@@ -35,6 +35,11 @@ export default class Icons {
     path: "M823.613-267.694 515.308-480l308.305-212.306v424.612Zm-378.921 0L136.387-480l308.305-212.306v424.612Z",
     viewBox: [0, -960, 960, 960]
   }
+
+  private static _closeIcon: IconProps = {
+    path: "m249-207-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z",
+    viewBox: [0, -960, 960, 960] 
+  }
   
   private static generateElementFromString(componentString: string): Element {
     const tempContainer = document.createElement("div")
@@ -66,55 +71,50 @@ export default class Icons {
   }
 
   static settingsIcon(size?: number, fill?: string) {
-    const settingsIconProps = this._settingsIcon
-
     return this.createIconComponent(
-      settingsIconProps,
+      this._settingsIcon,
       size ?? this._defaultIconSize,
       fill
     )
   }
   static playIcon(size?: number, fill?: string) {
-    const playIconProps = this._playIcon
-
     return this.createIconComponent(
-      playIconProps,
+      this._playIcon,
       size ?? this._defaultIconSize,
       fill
     )
   }
   static pauseIcon(size?: number, fill?: string) {
-    const pauseIconProps = this._pauseIcon
-
     return this.createIconComponent(
-      pauseIconProps,
+      this._pauseIcon,
       size ?? this._defaultIconSize,
       fill
     )
   }
   static resetIcon(size?: number, fill?: string) {
-    const resetIconProps = this._resetIcon
-
     return this.createIconComponent(
-      resetIconProps,
+      this._resetIcon,
       size ?? this._defaultIconSize,
       fill
     )
   }
   static fastForwardIcon(size?: number, fill?: string) {
-    const fastForwardIconProps = this._fastForwardIcon
-
     return this.createIconComponent(
-      fastForwardIconProps,
+      this._fastForwardIcon,
       size ?? this._defaultIconSize,
       fill
     )
   }
   static fastRewindIcon(size?: number, fill?: string) {
-    const fastRewindIconProps = this._fastRewindIcon
-
     return this.createIconComponent(
-      fastRewindIconProps,
+      this._fastRewindIcon,
+      size ?? this._defaultIconSize,
+      fill
+    )
+  }
+  static closeIcon(size?: number, fill?: string) {
+    return this.createIconComponent(
+      this._closeIcon,
       size ?? this._defaultIconSize,
       fill
     )

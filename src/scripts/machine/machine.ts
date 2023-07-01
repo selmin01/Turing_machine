@@ -30,7 +30,8 @@ try {
   const entradaMT: IEntradaMT = JSON.parse(data)
   criarMaquinaTuring(entradaMT)
 } catch (error) {
-  const errorHandler = ErrorHandler.instance
-  window.location.href = "/"
-  errorHandler.showError(error as string)
+  if (error instanceof Error) {
+    localStorage.setItem("errors", JSON.stringify([error.message]))
+    window.location.href = "/"
+  } else console.log("Unhandled error - " + error)
 }

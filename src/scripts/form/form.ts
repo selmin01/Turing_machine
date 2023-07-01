@@ -28,6 +28,14 @@ if (!spanTituloTransicoes) throw new Error("Span do título de transições não
 
 const arrayTransicoes: Transicao[] = [];
 
+const errorsData: string | null = localStorage.getItem("errors")
+if (errorsData) {
+    console.log("Errors Data: " + errorsData)
+    const errors: string[] = JSON.parse(errorsData)
+    errors.forEach(error => ErrorHandler.instance.showError(error))    
+    localStorage.removeItem("errors")
+}
+
 formAddTransicao.addEventListener('submit', (event: SubmitEvent) => {
     try { 
     // Evita o comportamento padrão do envio do formulário
@@ -85,23 +93,28 @@ botaoRemoverTransicao.addEventListener("click", () => {
 
 botaoCriarMT.addEventListener("click", () => {
     try {
-    const estadosEspeciaisFormData = new FormData(formEstadosEspeciais)
-    
-    const q0 = estadosEspeciaisFormData.get("q0")?.toString()
-    const qA = estadosEspeciaisFormData.get("qA")?.toString()
-    const qR = estadosEspeciaisFormData.get("qR")?.toString()
-
-    if (!(q0 && qA && qR)) throw new Error("Os estados especiais precisam ser definidos!")
-
-    const entradaMT: IEntradaMT = {
-        δ: arrayTransicoes,
-        q0, qA, qR
-    }
-
-    localStorage.setItem("entradaMT", JSON.stringify(entradaMT))
+        
+        const estadosEspeciaisFormData = new FormData(formEstadosEspeciais)
+        
+        const q0 = estadosEspeciaisFormData.get("q0")?.toString()
+        const qA = estadosEspeciaisFormData.get("qA")?.toString()
+        const qR = estadosEspeciaisFormData.get("qR")?.toString()
+        
+        if (!(q0 && qA && qR)) throw new Error("Os estados especiais precisam ser definidos!")
+        
+        const entradaMT: IEntradaMT = {
+            δ: arrayTransicoes,
+            q0, qA, qR
+        }
+        
+        localStorage.setItem("entradaMT", JSON.stringify(entradaMT))
         window.location.href = "/machine.html"
         
     } catch (error) {
         ErrorHandler.instance.showError(error as string)
-    } 
+    }
 })
+
+const buttonAddErrors = document.querySelector("#adderrors")
+buttonAddErrors?.addEventListener("click", () =>
+    ErrorHandler.instance.showError("Mensagem de erro - Teste"))
