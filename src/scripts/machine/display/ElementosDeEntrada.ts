@@ -7,7 +7,7 @@ import ErrorHandler from "../../components/ErrorHandler"
 export default class ElementosDeEntrada {
   private _maquinaTuring: MaquinaTuring
 
-  private _anchorConfiguracoes: HTMLAnchorElement
+  private _botaoConfiguracoes: HTMLButtonElement
   private _inputPalavra: HTMLInputElement
   private _botaoPlayPause: HTMLButtonElement
   private _botaoInserirPalavra: HTMLButtonElement
@@ -123,11 +123,15 @@ export default class ElementosDeEntrada {
     if (!inputPalavra) throw new Error("Input de palavra não identificado.")
     this._inputPalavra = inputPalavra
     
-    const anchorConfiguracoes: HTMLAnchorElement | null =
+    const botaoConfiguracoes: HTMLButtonElement | null =
       document.querySelector("#settings")
-    if (!anchorConfiguracoes) throw new Error("Ícone de configurações não identificado.")
-    anchorConfiguracoes.appendChild(Icons.settingsIcon(48, "#111414"))
-    this._anchorConfiguracoes = anchorConfiguracoes
+    if (!botaoConfiguracoes) throw new Error("Ícone de configurações não identificado.")
+    botaoConfiguracoes.appendChild(Icons.settingsIcon(48, "#111414"))
+    botaoConfiguracoes.addEventListener("click", () => {
+      const pathname = localStorage.getItem("default-pathname")
+      window.location.href = pathname || "/"
+    })
+    this._botaoConfiguracoes = botaoConfiguracoes
 
     const botaoPlayPause: HTMLButtonElement | null =
       document.querySelector("#play-pause")
