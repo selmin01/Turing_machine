@@ -7,10 +7,6 @@ import tapeAcceptingVideo from "../../assets/videos/tape-accepting.webm"
 import tapeRejectingVideo from "../../assets/videos/tape-rejecting.webm"
 import tapeLoopVideo from "../../assets/videos/tape-loop.webm"
 
-const inputQ0: HTMLInputElement | null =
-    document.querySelector("#estado")
-if (!inputQ0) throw new Error("Input do estado inicial não identificado.")
-
 const formAddTransicao: HTMLFormElement | null =
     document.querySelector('#form-transicao') as HTMLFormElement;
 if (!formAddTransicao) throw new Error("Formulário de transições não identificado.")
@@ -55,11 +51,55 @@ const tapeLoopVideoElement: HTMLVideoElement | null =
 if (!tapeLoopVideoElement) throw new Error("Tag do vídeo de loop da fita não identificado.")
 tapeLoopVideoElement.src = tapeLoopVideo
 
+const inputQOrigem: HTMLInputElement | null =
+    document.querySelector("#input-est-origem")
+if (!inputQOrigem) throw new Error("Input do estado de oriem não identificado.");
+
+const inputQ0: HTMLInputElement | null =
+    document.querySelector("#input-q0")
+if (!inputQ0) throw new Error("Input do estado inicial não identificado.")
+
+const inputQA: HTMLInputElement | null =
+    document.querySelector("#input-qA")
+if (!inputQA) throw new Error("Input do estado de aceitação não identificado.")
+
+const inputQR: HTMLInputElement | null =
+    document.querySelector("#input-qR")
+if (!inputQR) throw new Error("Input do estado de rejeição não identificado.")
+
 const arrayTransicoes: Transicao[] = [];
+
+function adicionarTransicao(t: Transicao) {
+    const [
+        estadoOrigem,
+        simboloLeitura,
+        estadoDestino,
+        simboloEscrita,
+        movimento
+    ] = t
+
+    // Cria um novo item de lista com as informações do formulário
+    const listItem = document.createElement("li");
+    listItem.textContent = `
+        δ(${estadoOrigem}, '${simboloLeitura}') = 
+        (${estadoDestino}, '${simboloEscrita}', ${movimento})`
+    
+    // Nova transição adicionada tanto na lista do HTML quanto na estrutura de dados
+    ulTransicoes!.appendChild(listItem)
+    arrayTransicoes.push(t)
+}
+
+const existingData: string | null = localStorage.getItem("entradaMT")
+if (existingData) {
+    const data: IEntradaMT = JSON.parse(existingData)
+    inputQ0.value = data.q0
+    inputQA.value = data.qA
+    inputQR.value = data.qR
+    data.δ.forEach(t => adicionarTransicao(t))
+}
 
 const errorsData: string | null = localStorage.getItem("errors")
 if (errorsData) {
-    console.log("Errors Data: " + errorsData)
     const errors: string[] = JSON.parse(errorsData)
     errors.forEach(error => ErrorHandler.instance.showError(error))    
     localStorage.removeItem("errors")
@@ -98,18 +138,10 @@ formAddTransicao.addEventListener('submit', (event: SubmitEvent) => {
     // Criação da nova transição
     const novaTransicao: Transicao =
         [estadoOrigem, simboloLeitura, estadoDestino, simboloEscrita, movimento]
+        
+    adicionarTransicao(novaTransicao)
 
-    // Cria um novo item de lista com as informações do formulário
-    const listItem = document.createElement("li");
-    listItem.textContent = `
-        δ(${estadoOrigem}, '${simboloLeitura}') = 
-        (${estadoDestino}, '${simboloEscrita}', ${movimento})`
-    
-    // Nova transição adicionada tanto na lista do HTML quanto na estrutura de dados
-    ulTransicoes.appendChild(listItem)
-        arrayTransicoes.push(novaTransicao)
-
-    inputQ0.focus()
+    inputQOrigem.focus()
     } catch (error) {
         ErrorHandler.instance.showError(error as string)
     }

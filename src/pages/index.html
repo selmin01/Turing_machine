@@ -26,32 +26,32 @@
 
               <div>
                 <label class="form-label">Estado de origem</label>
-                <input type="text" class="form-control" id="estado" name="estado">
+                <input id="input-est-origem" type="text" class="form-control" name="estado">
               </div>
 
               <div>
                 <label class="form-label">Símbolo de leitura</label>
-                <input type="text" class="form-control" id="leitura" name="leitura">
+                <input id="input-simb-leitura" type="text" class="form-control" name="leitura">
               </div>
 
               <hr>
               
               <div>
                 <label class="form-label">Estado de Destino</label>
-                <input type="text" class="form-control" id="estadoDestino" name="estadoDestino">
+                <input id="input-est-destino" type="text" class="form-control" name="estadoDestino">
                 <!-- <div id="emailHelp" class="form-text">Formato: q0, q1,q2,q3</div> -->
               </div>
 
               <div>
                 <label class="form-label">Símbolo de escrita</label>
-                <input type="text" class="form-control" id="escrita" name="escrita">
+                <input id="input-simb-escrita" type="text" class="form-control" id="escrita" name="escrita">
               </div>
               
               <div>
                 <label class="form-label">Movimento</label>
                 <br>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" id="movimento" name="movimento" value="Esquerda">
+                  <input id="input-mov" class="form-check-input" type="radio" name="movimento" value="Esquerda">
                   <label class="form-check-label" for="inlineCheckbox1">Esquerda</label>
                 </div>
                 <div class="form-check form-check-inline">
@@ -86,16 +86,16 @@
             <form id="form-estados-especiais">
               <div class="row">
                 <div class="col">
-                  <label class="form-label">Estado inicial</label>
-                  <input type="text" name="q0" class="form-control" placeholder="q0">
+                  <label class="form-label" for="q0">Estado inicial</label>
+                  <input id="input-q0" type="text" name="q0" class="form-control" placeholder="q0">
                 </div>
                 <div class="col">
-                  <label class="form-label">Est. de aceitação</label>
-                  <input type="text" name="qA" class="form-control" placeholder="qAceita">
+                  <label class="form-label" for="qA">Est. de aceitação</label>
+                  <input id="input-qA" type="text" name="qA" class="form-control" placeholder="qAceita">
                 </div>
                 <div class="col">
-                  <label class="form-label">Est. de rejeição</label>
-                  <input type="text" name="qR" class="form-control" placeholder="qRejeita">
+                  <label class="form-label" for="qR">Est. de rejeição</label>
+                  <input id="input-qR" type="text" name="qR" class="form-control" placeholder="qRejeita">
                 </div>
               </div>
             </form>
