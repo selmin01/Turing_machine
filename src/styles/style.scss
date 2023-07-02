@@ -19,6 +19,13 @@ h1, h2 {
   text-align: center;
 }
 
+button {
+  border: none;
+  outline: none;
+  background-color: inherit;
+  cursor: pointer;
+}
+
 .nomeDaMaquina {
   -webkit-text-stroke-width: 1.5px; /* largura da borda */
   -webkit-text-stroke-color: blueviolet; /* cor da borda */
@@ -414,13 +421,6 @@ span {
 
   svg {
     display: block;
-  }
-
-  button {
-    border: none;
-    outline: none;
-    background-color: inherit;
-    cursor: pointer;
   }
 
   & > * {
