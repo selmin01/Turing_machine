@@ -128,7 +128,7 @@
 
       </div> <!-- Informações da máquina -->
 
-    </div><!-- grid -->
+    </div><!-- mt-input -->
 
     <div id="content" class="grid">
 
@@ -187,7 +187,7 @@
           <h3>Os 7 elementos - &ldquo;7-upla&rdquo;</h3>
           <p>A Máquina de Turing é definida por um conjunto de 7 itens (7-upla): <strong>(Q, Σ, Γ, δ, q0, qA, qR)</strong>, sendo que cada item significa:</p>
 
-          <ul id="mt-content-elements">
+          <ul class="mt-content-elements">
             <li><strong>Q</strong> = Conjunto finito de estados;</li>
             <li><strong>Σ</strong> = Alfabeto finito da palavra de entrada;</li>
             <li><strong>Γ</strong> = Alfabeto finito de todos os símbolos que serão usados na fita;</li>
@@ -227,11 +227,70 @@
       <hr class="grid-item isolated">
 
       <!-- Como criar -->
-      <div id="content-section-3">
+      <div id="content-section-3" class="grid-item isolated flex-column gap-4">
+
+        <h2>Como criar a sua Máquina de Turing nesse app</h2>
+        <p>Criar a sua Máquina de Turing é muito fácil. Não é necessário inserir cada um dos 7 elementos pertencentes à Máquina de Turing, basta inserir apenas as transições. Isso pode ser feito da seguinte forma:</p>
+
+        <div>
+          <h3>Preencha o formulário de transição, para cada transição da sua MT</h3>
+          <p>No formulário acima, preencha todos os campos e clique no botão "+ Transição" (ou aperte Enter).</p>
+          <ul class="mt-content-elements">
+            <li><strong>Estado de origem</strong>: Dê o nome do estado de origem da sua transição. Esse campo não pode ser nulo.</li>
+            <li><strong>Símbolo de leitura</strong>: Digite o símbolo de leitura da sua transição. Esse campo deverá ter apenas um caracter ou pode ser vazio - Será interpretado como o caracter de espaço em branco.</li>
+            <li><strong>Estado de destino</strong>: Dê o nome do estado de destino da sua transição. Assim como o estado de origem, esse campo não pode ser nulo também.</li>
+            <li><strong>Símbolo de escrita</strong>: Digite o símbolo que será escrito na célula da MT na transição em questão. Se for deixado em branco, será interpretado como caracter de espaço em branco.</li>
+            <li><strong>Movimento</strong>: Selecione um dos dois movimentos que o cabeçote da máquina fará na sua transição (Esquerda, Direita)</li>
+          </ul>
+        </div>
+
+        <div>
+          <h3>Preencha o formulário de estados especiais</h3>
+          <p>Após definir suas transições, saber qual é o <strong>estado inicial (q0)</strong>, <strong>estado de aceitação (qA)</strong> e <strong>estado de rejeição (qR)</strong> da máquina é essencial para determinar seu funcionamento. Insira os três e certifique-se de haver transições para eles, do contrário a máquina começará rejeitando por indefinição!</p>
+        </div>
+
+        <div>
+          <h3>Após criada, dê a sua palavra de entrada</h3>
+          <p>No dashboard da Máquina de Turing, preencha o campo com o valor da palavra de entrada da computação e teste sua máquina.</p>
+        </div>
+
+        <div>
+          <h3>Inferência de informações</h3>
+          <p>Como você pôde ver, para determinar a sua Máquina de Turing apenas foi preciso determinar as transições (δ), os três estados especiais (q0, qA, qR) e a sua palavra de entrada. Três elementos (Q, Σ, Γ) da máquina não precisaram ser inseridos. Como eles são determinados?</p>
+          <ul class="mt-content-elements">
+            <li><strong>Q (Conjunto de estados)</strong>: É inferido pelos estados que aparecem nas transições, em união com os estados que foram inseridos no campo dos estados especiais (q0, qA, qR).</li>
+            <li><strong>Σ (Alfabeto de entrada)</strong>: É inferido através de todos os símbolos que aparecem na palavra de entrada inserida.</li>
+            <li><strong>Γ (Alfabeto da fita)</strong>: É inferido através da união entre Σ, todos os símbolos que aparecem nas transições (δ) e o símbolo de espaço em branco.</li>
+          </ul>
+        </div>
 
       </div>
 
-    </div>
+      <hr class="grid-item isolated">
+
+    </div><!-- content -->
+
+    <footer class="grid">
+      <h4 class="grid-item isolated justify-content-center">Simulador de Máquina de Turing</h4>
+
+      <div class="grid-item isolated text-center">
+        <p>
+          Desenvolvido por 
+          <a href="https://github.com/peedrofernandes" target="_blank">
+            Pedro Fernandes
+          </a> 
+          e 
+          <a href="https://github.com/selmin01" target="_blank">
+            Gabriel Anselmo
+          </a>
+          na disciplina de <strong>Teoria da Computação</strong> durante o período 2023/1 do curso de Ciência da Computação na 
+          <a href="https://www.udesc.br/cct" target="_blank">
+            Universidade do Estado de Santa Catarina - Centro de Ciências Tecnológicas (UDESC-CCT)
+          </a>
+          .
+        </p>
+      </div>
+    </footer>
 
   </div><!-- viewport -->
 
