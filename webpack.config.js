@@ -10,7 +10,7 @@ module.exports = {
     machine: "./src/scripts/machine/machine.ts",
   },
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "build"),
     filename: "[name].bundle.js"
   },
   plugins: [

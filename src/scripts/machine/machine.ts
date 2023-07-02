@@ -21,10 +21,12 @@ const mockDadosMaquina: IEntradaMT = {
   qR: "q_rejeita",
 };
 
+const defaultPathname: string | null = localStorage.getItem("default-pathname")
+
 try {
   const data: string | null = localStorage.getItem("entradaMT")
   if (!data) {
-    window.location.href = "/"
+    window.location.href = defaultPathname || "/"
     throw new Error("Dados de entrada não identificados.")
   }
   const entradaMT: IEntradaMT = JSON.parse(data)
@@ -32,6 +34,6 @@ try {
 } catch (error) {
   if (error instanceof Error) {
     localStorage.setItem("errors", JSON.stringify([error.message]))
-    window.location.href = "/"
+    window.location.href = defaultPathname || "/"
   } else console.log("Unhandled error - " + error)
 }

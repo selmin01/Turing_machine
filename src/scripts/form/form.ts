@@ -69,6 +69,12 @@ if (!inputQR) throw new Error("Input do estado de rejeição não identificado."
 
 const arrayTransicoes: Transicao[] = [];
 
+let defaultPathname: string | null = localStorage.getItem("default-pathname")
+if (!defaultPathname) {
+    defaultPathname = window.location.pathname
+    localStorage.setItem("default-pathname", defaultPathname)
+}
+
 function adicionarTransicao(t: Transicao) {
     const [
         estadoOrigem,
@@ -171,7 +177,7 @@ botaoCriarMT.addEventListener("click", () => {
         }
         
         localStorage.setItem("entradaMT", JSON.stringify(entradaMT))
-        window.location.href = "/machine.html"
+        window.location.href = defaultPathname + "machine.html"
         
     } catch (error) {
         ErrorHandler.instance.showError(error as string)
