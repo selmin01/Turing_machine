@@ -30,10 +30,11 @@ This application was developed using plain TypeScript, HTML5 and CSS3, bundled w
 
 There are two ways that you can use this application - You can either run the online version of it - available at [peedrofernandes.github.io/turing-machine](https://peedrofernandes.github.io/turing-machine) or you can either clone this repository or download it's ZIP and run on your local machine. Instructions on how to effectively build your Turing Machine are in the app.
 
-To run this project locally, you'll need **node.js** and **npm** installed. After you guarantee that, navigate to the source directory of the project you downloaded and follow theese steps:
+To run this project locally, you'll need **node.js** and **npm** installed. Once you guarantee that, navigate to the source directory of the project and enjoy the project doing as simply as that:
 
 - Run `npm install`;
 - Run `npm run dev`;
+- There you go! To view the locally running project, go to the [locahost at the port 3000](http://localhost:3000).
 
 ![Imagem resultado de exemplo](src//assets/img/Captura%20de%20Tela.png)
 
